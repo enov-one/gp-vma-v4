@@ -1,0 +1,2941 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GP Patient VMA Analysis V4</title>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <style>
+        :root {
+            --bg-color: #1a1a2e;
+            --text-color: #eaeaea;
+            --accent-color: #4a9eff;
+            --code-bg: #16213e;
+            --border-color: #0f3460;
+            --success-color: #00d26a;
+            --warning-color: #ffb347;
+            --danger-color: #ff6b6b;
+        }
+        
+        * { box-sizing: border-box; }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+        }
+        
+        #password-container {
+            max-width: 400px;
+            margin: 100px auto;
+            padding: 40px;
+            background: var(--code-bg);
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            text-align: center;
+        }
+        
+        #password-container h2 { color: var(--accent-color); margin-bottom: 20px; }
+        
+        #password-input {
+            width: 100%;
+            padding: 12px;
+            font-size: 16px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            background: var(--bg-color);
+            color: var(--text-color);
+            margin-bottom: 15px;
+        }
+        
+        #password-input:focus { outline: none; border-color: var(--accent-color); }
+        
+        #submit-btn {
+            width: 100%;
+            padding: 12px;
+            font-size: 16px;
+            background: var(--accent-color);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        
+        #submit-btn:hover { background: #3a8adf; }
+        #error-msg { color: var(--danger-color); margin-top: 10px; display: none; }
+        #content { max-width: 1000px; margin: 0 auto; display: none; }
+        #content h1 { color: var(--accent-color); border-bottom: 2px solid var(--border-color); padding-bottom: 10px; }
+        #content h2 { color: var(--accent-color); margin-top: 40px; border-bottom: 1px solid var(--border-color); padding-bottom: 8px; }
+        #content h3 { color: var(--warning-color); margin-top: 30px; }
+        #content pre {
+            background: var(--code-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 20px;
+            overflow-x: auto;
+            font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+            font-size: 13px;
+            line-height: 1.5;
+        }
+        #content code { font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace; background: var(--code-bg); padding: 2px 6px; border-radius: 4px; }
+        #content pre code { padding: 0; background: none; }
+        #content a { color: var(--accent-color); }
+        #content table { width: 100%; border-collapse: collapse; margin: 20px 0; }
+        #content th, #content td { border: 1px solid var(--border-color); padding: 10px; text-align: left; }
+        #content th { background: var(--code-bg); color: var(--accent-color); }
+        #content blockquote { border-left: 4px solid var(--accent-color); margin: 20px 0; padding-left: 20px; color: #aaa; }
+        #content hr { border: none; border-top: 1px solid var(--border-color); margin: 40px 0; }
+        #content strong { color: var(--warning-color); }
+        @media (max-width: 768px) { body { padding: 10px; } #content pre { font-size: 11px; padding: 10px; } }
+    </style>
+</head>
+<body>
+    <div id="password-container">
+        <h2>🔒 Protected Document</h2>
+        <p>GP Patient VMA Analysis V4</p>
+        <p style="font-size: 12px; color: #888;">With Perimenopause Integration</p>
+        <input type="password" id="password-input" placeholder="Enter password">
+        <button id="submit-btn" onclick="checkPassword()">Access Document</button>
+        <p id="error-msg">Incorrect password</p>
+    </div>
+    <div id="content"></div>
+    <script>
+        const PASSWORD_HASH = '23635671b14ff3f69e01d9f32f74ae309de09a953f6b49385b3a81b3239237db';
+        async function sha256(message) {
+            const msgBuffer = new TextEncoder().encode(message);
+            const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+            const hashArray = Array.from(new Uint8Array(hashBuffer));
+            return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+        }
+        async function checkPassword() {
+            const password = document.getElementById('password-input').value;
+            const hash = await sha256(password);
+            if (hash === PASSWORD_HASH) {
+                document.getElementById('password-container').style.display = 'none';
+                document.getElementById('content').style.display = 'block';
+                loadContent();
+            } else {
+                document.getElementById('error-msg').style.display = 'block';
+            }
+        }
+        document.getElementById('password-input').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') checkPassword();
+        });
+        function loadContent() {
+            const markdown = `# GP Patient: VMA/Catecholamine Pathway Deep Dive (V4)
+## Evidence-Based Mechanistic Analysis
+
+**Analysis Date:** January 2026
+**Version:** 4.0 - Complete Endotype Analysis with Perimenopause Integration
+**Status:** For Expert Psychiatric Review
+
+---
+
+## Table of Contents
+1. [Clinical Picture](#1-clinical-picture)
+2. [Key Biomarkers](#2-key-biomarkers)
+3. [Genetic Variants - Evidence-Graded Analysis](#3-genetic-variants---evidence-graded-analysis)
+4. [The Anxiety Phenotype Problem](#4-the-anxiety-phenotype-problem)
+5. [Anxiety Endotype Analysis](#5-anxiety-endotype-analysis)
+6. [Competing Hypotheses](#6-competing-hypotheses)
+7. [Brain Energy Deficit & Catecholamine Intersection](#7-brain-energy-deficit--catecholamine-intersection)
+8. [Perimenopause & Hormonal Amplification](#8-perimenopause--hormonal-amplification) ⭐ **NEW IN V4**
+9. [Integrative Model](#9-integrative-model)
+10. [Therapeutic Implications](#10-therapeutic-implications)
+11. [Clinical Recommendations](#11-clinical-recommendations)
+12. [Research Citations](#12-research-citations)
+
+---
+
+## 1. Clinical Picture
+
+### Symptom Profile (VERIFIED from GP_patient_input_v2.json)
+
+\`\`\`
++===============================================================================+
+|                         CLINICAL PRESENTATION                                  |
++===============================================================================+
+
+  PRIMARY COMPLAINTS
+  ---------------------------------------------------------------------------
+  | Symptom                           | Severity    | Relevance              |
+  |-----------------------------------|-------------|------------------------|
+  | Anxiety                           | SEVERE      | Primary mental Sx      |
+  | "How often did you feel tired?"   | ALWAYS      | Constant fatigue       |
+  | Irregular heartbeat/racing/       | MODERATE    | Adrenergic sign        |
+  |   heart skipping, tightness       |             |                        |
+  | Brain fog                         | MODERATE    | PFC dysfunction        |
+  | Tense                             | MODERATE    | Muscular tension       |
+  | Depression                        | MILD        |                        |
+  | Irritability                      | MILD        |                        |
+  | Panic                             | MILD        |                        |
+  | Nervous                           | MILD        |                        |
+  |-----------------------------------|-------------|------------------------|
+  | Suicidal Feeling                  | NONE        |                        |
+  ---------------------------------------------------------------------------
+
+  DIAGNOSES: PTSD (Yes), ADHD (Yes)
+
+  PATIENT GOALS: 1. Fatigue  2. Sex drive  3. Anxiety
+
++===============================================================================+
+\`\`\`
+
+### Sleep Profile (NON-RESTORATIVE SLEEP - Key Finding)
+
+\`\`\`
++===============================================================================+
+|                              SLEEP ASSESSMENT                                  |
++===============================================================================+
+
+  Question                                      | Response
+  ----------------------------------------------|------------------------------
+  My sleep quality was                          | Poor
+  I had a problem with my sleep                 | VERY MUCH
+  I had difficulty falling asleep               | A little bit
+  My sleep was restless                         | Somewhat
+  I tried hard to get to sleep                  | A little bit
+  I worried about not being able to fall asleep | Not at all
+  My sleep was REFRESHING                       | NOT AT ALL    <-- KEY
+  I was satisfied with my sleep                 | NOT AT ALL    <-- KEY
+  Issues with waking up throughout the night    | Slight
+  Do you feel excessively sleepy/fatigued       | OFTEN
+    during the day?                             |
+
+  ---------------------------------------------------------------------------
+  INTERPRETATION:
+  - NO significant difficulty falling asleep
+  - NO sleep anxiety
+  - Sleep is NON-RESTORATIVE despite adequate quantity
+  - This pattern suggests autonomic/catecholamine dysregulation during sleep
+  ---------------------------------------------------------------------------
+
++===============================================================================+
+\`\`\`
+
+---
+
+## 2. Key Biomarkers
+
+### Neurotransmitter Metabolites (VERIFIED)
+
+\`\`\`
++===============================================================================+
+|                     CATECHOLAMINE METABOLITES                                  |
++===============================================================================+
+
+  MARKER          | DATE        | VALUE      | REF RANGE     | STATUS
+  ----------------|-------------|------------|---------------|----------------
+
+  DOPAMINE METABOLITES
+  ----------------|-------------|------------|---------------|----------------
+  HVA (DUTCH)     | 2023-08-29  | 5.7 ug/mg  | (not stated)  | ?
+  HVA (DUTCH)     | 2025-12-01  | 15.0 ug/mg | 3-11          | HIGH ⚠️
+
+  NOREPINEPHRINE METABOLITE
+  ----------------|-------------|------------|---------------|----------------
+  VMA (DUTCH)     | 2025-12-01  | 2.9 ug/mg  | 2.2-5.5       | NORMAL
+
+  ---------------------------------------------------------------------------
+  THE PARADOX:
+  ---------------------------------------------------------------------------
+
+  High HVA = HIGH dopamine turnover (rapid breakdown)
+  Normal VMA = NORMAL norepinephrine turnover
+
+  But she has SEVERE anxiety and MODERATE palpitations...
+
+  ---------------------------------------------------------------------------
+  WHY IS VMA NORMAL DESPITE ANXIETY SYMPTOMS?
+  ---------------------------------------------------------------------------
+
+  VMA reflects NE PRODUCTION/TURNOVER, not RECEPTOR RESPONSE.
+
+  Her VMA is normal (even low-normal at 2.9) because:
+
+  1. DBH rs1108580 AG = INTERMEDIATE enzyme activity
+     - DBH converts dopamine → norepinephrine
+     - Intermediate activity = LESS NE being synthesized
+     - Less NE made = less VMA produced
+
+  2. ADRA2A rs553668 GG = autoreceptor OVEREXPRESSION
+     - Excessive presynaptic inhibition
+     - SUPPRESSES baseline NE release
+     - Lower baseline NE = lower VMA
+
+  The key insight:
+
+       LOW BASELINE NE PRODUCTION (DBH intermediate + ADRA2A suppression)
+                    |
+                    v
+              VMA = NORMAL (2.9)
+                    |
+                    BUT
+                    |
+                    v
+       When NE IS released (stress trigger):
+                    |
+                    v
+       ADRB1 Arg389 amplifies response 3-4x
+                    |
+                    v
+       SEVERE SYMPTOMS despite normal VMA
+
+  VMA is a measure of AVERAGE NE turnover, not PEAK responses.
+  She has LOW average but HIGH peaks = oscillating pattern.
+
+  ---------------------------------------------------------------------------
+
+  Metabolites reflect TURNOVER, not:
+    - Receptor sensitivity
+    - Synaptic availability
+    - Functional signaling capacity
+
+  This is why the picture is NOT straightforward.
+
++===============================================================================+
+\`\`\`
+
+### Ferritin Trend (CRITICAL FINDING)
+
+\`\`\`
++===============================================================================+
+|                        FERRITIN TIMELINE                                       |
++===============================================================================+
+
+  DATE        | FERRITIN   | REF RANGE   | STATUS
+  ------------|------------|-------------|----------------------------------
+  2021-01-13  | 151 ng/mL  |             | ✓ Adequate - TH functioning
+  2023-04-28  | 30 ng/mL   |             | ⚠️ LOW - TH impaired
+  2024-01-20  | 45 ng/mL   |             | Borderline recovery
+  2024-12-19  | 26 ng/mL   |             | ⚠️ LOW - TH impaired
+  2025-05-01  | 7 ng/mL    |             | 🔴 CRITICALLY LOW
+  2025-09-11  | 9 ng/mL    | 16-232      | 🔴 CRITICALLY LOW (BELOW REF)
+
+  ---------------------------------------------------------------------------
+
+  ⚠️ CURRENT STATUS: 9 ng/mL - SEVERELY DEPLETED ⚠️
+
+  This is BELOW the laboratory reference range (16-232 ng/mL)
+  Trend: 151 → 30 → 45 → 26 → 7 → 9 ng/mL (progressive depletion)
+
+  ---------------------------------------------------------------------------
+
+  WHY THIS MATTERS FOR DOPAMINE:
+  ---------------------------------------------------------------------------
+
+  Tyrosine Hydroxylase (TH) is the RATE-LIMITING enzyme for dopamine synthesis:
+
+       Tyrosine --[TH + IRON]--> L-DOPA --> Dopamine
+
+  TH requires IRON as a cofactor. Low ferritin = LOW IRON = IMPAIRED TH
+
+  At ferritin 9 ng/mL, her TH is operating at SEVERELY REDUCED capacity.
+
+  ---------------------------------------------------------------------------
+
+  THE FERRITIN-DOPAMINE CONNECTION:
+  ---------------------------------------------------------------------------
+
+       CRITICALLY LOW FERRITIN (9 ng/mL)
+              |
+              v
+       SEVERELY IMPAIRED TH ACTIVITY
+              |
+              v
+       MUCH LESS DOPAMINE SYNTHESIZED
+              |
+              +----> MAO-B TT (fast degradation)
+              |              |
+              |              v
+              |        Whatever little she makes
+              |        gets destroyed rapidly
+              |              |
+              v              v
+         HVA HIGH (15.0) = rapid turnover of SEVERELY LIMITED dopamine pool
+
+  She's in a "dopamine deficit spiral":
+  1. Can't make enough (iron-dependent TH severely impaired at 9 ng/mL)
+  2. What little she makes gets destroyed (MAO-B TT)
+  3. High HVA reflects the THROUGHPUT, not the POOL SIZE
+
+  THIS IS A MEDICAL PRIORITY - ferritin this low requires urgent optimization.
+
++===============================================================================+
+\`\`\`
+
+### Cortisol Awakening Response Timeline (VERIFIED)
+
+\`\`\`
++===============================================================================+
+|                            CAR% TIMELINE                                       |
++===============================================================================+
+
+  DATE        | CAR %    | REF RANGE | STATUS
+  ------------|----------|-----------|---------------
+  2023-08-29  | 78.1%    | 50-160%   | NORMAL
+  2025-10-12  | 47%      | 50-999%   | LOW (blunted)
+  2025-12-01  | 200%     | 50-160%   | HIGH (exaggerated)
+
+  TRAJECTORY: 78% --> 47% --> 200% = VOLATILE / UNSTABLE HPA axis
+
+  This volatility suggests DYSREGULATION, not simple "high" or "low" cortisol.
+  The HPA instability may be SECONDARY to catecholamine dysregulation.
+
++===============================================================================+
+\`\`\`
+
+---
+
+## 3. Genetic Variants - Evidence-Graded Analysis
+
+### Evidence Grading Key
+
+\`\`\`
+  GRADE A: Strong mechanistic evidence (direct functional studies)
+  GRADE B: Moderate/plausible (gene function established, variant effect inferred)
+  GRADE C: Weak/indirect (gene in pathway, no specific variant data)
+  GRADE D: No evidence / speculative
+\`\`\`
+
+### Summary Table of Key Variants
+
+\`\`\`
++===============================================================================+
+|                    VERIFIED GENOTYPES - EVIDENCE SUMMARY                       |
++===============================================================================+
+
+  CATECHOLAMINE METABOLISM
+  ---------------------------------------------------------------------------
+  GENE    | SNP         | Genotype   | Grade | Key Finding
+  --------|-------------|------------|-------|----------------------------------
+  MAO-B   | rs1799836   | TT         | A     | HIGH/FAST enzyme activity
+          |             |            |       | Rapid dopamine degradation
+  --------|-------------|------------|-------|----------------------------------
+  COMT    | rs4680      | GA         | A     | INTERMEDIATE (Val/Met)
+          |             |            |       | Neither fast nor slow clearance
+  --------|-------------|------------|-------|----------------------------------
+  MAO-A   | rs6323      | GT         | B     | Intermediate activity
+          |             |            |       | X-inactivation complicates
+  --------|-------------|------------|-------|----------------------------------
+  DBH     | rs1108580   | AG         | B     | Intermediate DA-->NE conversion
+          |             |            |       | Reduced enzyme activity
+          |             |            |       | → Lower baseline NE (explains normal VMA)
+
+  ADRENERGIC RECEPTORS
+  ---------------------------------------------------------------------------
+  GENE    | SNP         | Genotype   | Grade | Key Finding
+  --------|-------------|------------|-------|----------------------------------
+  ADRB1   | rs1801253   | CC         | A     | 3-4x receptor GAIN-OF-FUNCTION
+          |             | (Arg389)   |       | Amplified response to NE
+  --------|-------------|------------|-------|----------------------------------
+  ADRA2A  | rs553668    | GG         | B     | Receptor OVEREXPRESSION
+          |             |            |       | Complex effects (see below)
+
+  DOPAMINE RECEPTORS
+  ---------------------------------------------------------------------------
+  GENE    | SNP         | Genotype   | Grade | Key Finding
+  --------|-------------|------------|-------|----------------------------------
+  DRD2    | rs6277      | GA         | B     | REDUCED D2 receptor availability
+          |             |            |       | Impaired dopamine signaling
+  --------|-------------|------------|-------|----------------------------------
+  DRD4    | rs1800955   | CC         | B     | "Novelty seeking" risk variant
+  --------|-------------|------------|-------|----------------------------------
+  DRD4    | rs11246226  | CA         | C     | Risk variant
+
+  BRAIN ENERGY / INSULIN SIGNALING
+  ---------------------------------------------------------------------------
+  GENE    | SNP         | Genotype   | Grade | Key Finding
+  --------|-------------|------------|-------|----------------------------------
+  APOE    | rs429358    | CT         | A     | APOE ε3/ε4 - Carries one ε4 allele
+          | rs7412      | CC         |       | Impaired brain glucose metabolism
+  --------|-------------|------------|-------|----------------------------------
+  IRS1    | rs2943641   | CC         | B     | Insulin signaling risk
+          | rs2943640   | CC         |       |
+          | rs2943634   | CC         |       | Ischemic stroke risk
+
+  HPA AXIS
+  ---------------------------------------------------------------------------
+  GENE    | SNP         | Genotype   | Grade | Key Finding
+  --------|-------------|------------|-------|----------------------------------
+  FKBP5   | rs1360780   | TC         | A     | PTSD susceptibility gene
+          |             |            |       | GR sensitivity modulator
+
++===============================================================================+
+\`\`\`
+
+---
+
+## 4. The Anxiety Phenotype Problem
+
+### Anxiety is NOT One Thing
+
+\`\`\`
++===============================================================================+
+|                 THE ANXIETY PHENOTYPE PUZZLE                                   |
++===============================================================================+
+
+  OVERSIMPLIFIED VIEW:
+
+    "Anxiety = too much norepinephrine/adrenaline"
+    "Treatment = SSRIs or beta-blockers, done."
+
+  ---------------------------------------------------------------------------
+
+  REALITY: ANXIETY HAS MULTIPLE DISTINCT ENDOTYPES
+
+  Each endotype has different:
+    - Neurobiological mechanisms
+    - Genetic predispositions
+    - Optimal treatments
+    - Expected treatment responses
+
+  ---------------------------------------------------------------------------
+
+  THE SIX MAJOR ANXIETY ENDOTYPES:
+  ---------------------------------------------------------------------------
+
+  1. SEROTONERGIC
+     - 5-HT dysfunction / deficiency
+     - Classic SSRI-responsive
+     - Often co-occurs with depression
+     - Rumination, worry-dominant
+
+  2. NORADRENERGIC
+     - Excess NE / sympathetic overdrive
+     - Fight-or-flight activation
+     - Physical symptoms prominent
+     - Beta-blocker responsive
+
+  3. DOPAMINERGIC
+     - PFC hypofunction
+     - Can't regulate amygdala
+     - Executive dysfunction
+     - Often co-occurs with ADHD
+     - Stimulant or dopamine support may help
+
+  4. GABAergic
+     - Inhibitory tone deficit
+     - Generalized anxiety pattern
+     - Benzo-responsive
+     - Alcohol sensitivity common
+
+  5. HPA AXIS
+     - Cortisol dysregulation
+     - Chronic stress pattern
+     - Often with trauma history
+     - Variable cortisol patterns
+
+  6. GLUTAMATERGIC
+     - Excitatory excess
+     - NMDA/AMPA dysfunction
+     - May respond to glutamate modulators
+     - Often treatment-resistant
+
+  ---------------------------------------------------------------------------
+
+  CLINICAL IMPLICATION:
+
+  Treating a dopaminergic anxiety with SSRIs won't work well.
+  Treating a GABAergic anxiety with beta-blockers won't work well.
+
+  MECHANISM MATTERS FOR TREATMENT SELECTION.
+
++===============================================================================+
+\`\`\`
+
+### Her Data Doesn't Fit Simple Patterns
+
+\`\`\`
++===============================================================================+
+|                 WHY THIS CASE IS COMPLEX                                       |
++===============================================================================+
+
+  EVIDENCE AGAINST SIMPLE "HIGH NE" ANXIETY:
+  ---------------------------------------------------------------------------
+
+    - VMA is NORMAL (2.9) --> NE turnover is normal
+    - She's ALWAYS TIRED --> not wired/hyperaroused constantly
+    - Racing heart is MODERATE, not severe/constant
+    - She has ADHD --> suggests dopamine issues
+    - HVA is HIGH --> dopamine being degraded rapidly
+
+  ---------------------------------------------------------------------------
+
+  EVIDENCE AGAINST SIMPLE "SEROTONIN DEFICIENCY":
+  ---------------------------------------------------------------------------
+
+    - No classic depression pattern
+    - Fatigue is NOT improved with rest
+    - ADHD co-morbidity suggests DA > 5-HT
+    - Physical symptoms prominent
+
+  ---------------------------------------------------------------------------
+
+  THE COMPLEXITY:
+
+  Her genetics and labs suggest she has MULTIPLE endotype vulnerabilities
+  operating SIMULTANEOUSLY, with one endotype predominating.
+
++===============================================================================+
+\`\`\`
+
+---
+
+## 5. Anxiety Endotype Analysis
+
+### Her SNP Profile by Endotype
+
+\`\`\`
++===============================================================================+
+|                 ANXIETY ENDOTYPE RISK ASSESSMENT                               |
++===============================================================================+
+
+  ENDOTYPE 1: SEROTONERGIC
+  ---------------------------------------------------------------------------
+
+  SNP         | Gene    | Genotype | Significance
+  ------------|---------|----------|----------------------------------------
+  rs140701    | SLC6A4  | CT       | Risk variant (serotonin transporter)
+  rs1799913   | TPH1    | GT       | Risk variant (tryptophan hydroxylase)
+  rs1843809   | TPH2    | TT       | Most common, neutral
+  rs11024451  | TPH1    | CC       | Risk variant
+
+  ASSESSMENT: Some risk variants but NOT heavily loaded.
+              SLC6A4 CT suggests modest serotonin transporter variant.
+
+  RISK LEVEL: 🟡 MODERATE
+
+  ---------------------------------------------------------------------------
+
+  ENDOTYPE 2: NORADRENERGIC
+  ---------------------------------------------------------------------------
+
+  SNP         | Gene    | Genotype | Significance
+  ------------|---------|----------|----------------------------------------
+  rs1801253   | ADRB1   | CC       | 3-4x GAIN of function (Arg389Arg)
+  rs553668    | ADRA2A  | GG       | Overexpression → oscillating NE
+  rs1108580   | DBH     | AG       | Intermediate DA→NE conversion
+
+  ASSESSMENT: HEAVILY LOADED. The ADRB1 CC alone is a strong
+              pharmacogenomic marker. The oscillation model adds
+              mechanistic complexity.
+
+  RISK LEVEL: 🔴 HIGH
+
+  ---------------------------------------------------------------------------
+
+  ENDOTYPE 3: DOPAMINERGIC
+  ---------------------------------------------------------------------------
+
+  SNP         | Gene    | Genotype | Significance
+  ------------|---------|----------|----------------------------------------
+  rs1799836   | MAO-B   | TT       | FAST dopamine degradation ⚠️
+  rs4680      | COMT    | GA       | Intermediate (Val/Met)
+  rs6277      | DRD2    | GA       | REDUCED D2 receptor availability ⚠️
+  rs1800955   | DRD4    | CC       | Novelty seeking risk
+  rs11246226  | DRD4    | CA       | Risk variant
+
+  PLUS:
+  - Ferritin: 9 ng/mL (CRITICALLY LOW, ref 16-232) → severely impairs TH ⚠️
+  - HVA: 15.0 (HIGH) → confirms rapid turnover
+
+  ASSESSMENT: VERY HEAVILY LOADED. Triple hit:
+    1. Can't make enough (low iron/TH)
+    2. Degrades too fast (MAO-B TT)
+    3. Receptors don't work well (DRD2 rs6277 GA)
+
+  RISK LEVEL: 🔴 HIGHEST
+
+  ---------------------------------------------------------------------------
+
+  ENDOTYPE 4: GABAergic
+  ---------------------------------------------------------------------------
+
+  SNP         | Gene    | Genotype | Significance
+  ------------|---------|----------|----------------------------------------
+  rs12910925  | GABRA5  | CT       | Heterozygous, benign
+  rs1978340   | GAD1    | GA       | Below threshold
+  rs1805398   | GAD2    | GT       | Below threshold
+  rs188610    | SLC6A1  | GG       | Modest risk (GABA transporter)
+
+  ASSESSMENT: No major pathogenic variants in GABA synthesis (GAD1/2)
+              or receptors (GABRA). SLC6A1 variant is modest.
+
+  RISK LEVEL: 🟢 LOW
+
+  ---------------------------------------------------------------------------
+
+  ENDOTYPE 5: HPA AXIS
+  ---------------------------------------------------------------------------
+
+  SNP         | Gene    | Genotype | Significance
+  ------------|---------|----------|----------------------------------------
+  rs1360780   | FKBP5   | TC       | RISK - PTSD susceptibility ⚠️
+  rs1037100   | NR3C1   | AG       | GR receptor variant (risk)
+  rs10028213  | NR3C2   | CC       | MR receptor variant (risk)
+  rs4713916   | FKBP5   | AG       | Susceptibility to severe depression
+
+  Lab data - CAR%:
+  - 2023: 78% (normal)
+  - 2025-10: 47% (LOW - blunted)
+  - 2025-12: 200% (HIGH - exaggerated)
+
+  ASSESSMENT: The FKBP5 TC is clinically meaningful - this gene modulates
+              glucocorticoid receptor sensitivity and is THE gene for
+              PTSD/trauma-related HPA dysfunction. CAR is WILDLY VARIABLE
+              (47% to 200%) suggesting HPA dysregulation.
+
+  RISK LEVEL: 🟡 MODERATE-HIGH
+
+  ---------------------------------------------------------------------------
+
+  ENDOTYPE 6: GLUTAMATERGIC
+  ---------------------------------------------------------------------------
+
+  SNP         | Gene    | Genotype | Significance
+  ------------|---------|----------|----------------------------------------
+  rs10831496  | GRM5    | AG       | Risk variant (metabotropic glutamate)
+  rs1476587   | GRM3    | AA       | Risk variant
+  rs1457614   | GRIN2B  | AA       | Risk variant (NMDA receptor)
+  rs11866328  | GRIN2A  | GG       | Risk variant
+
+  ASSESSMENT: Some variants in glutamate receptors (GRM3, GRM5, GRIN2A/B)
+              but nothing dramatic.
+
+  RISK LEVEL: 🟢 LOW-MODERATE
+
++===============================================================================+
+\`\`\`
+
+### Risk Hierarchy Summary
+
+\`\`\`
++===============================================================================+
+|                    ANXIETY ENDOTYPE RISK HIERARCHY                             |
++===============================================================================+
+
+   🔴 DOPAMINERGIC     ████████████████████████████  HIGHEST
+      • MAO-B TT (fast degradation)
+      • DRD2 rs6277 GA (fewer receptors)
+      • Low ferritin (impaired synthesis)
+      • COMT GA (intermediate clearance)
+      • DRD4 risk variants
+
+   🔴 NORADRENERGIC    ██████████████████████████    HIGH
+      • ADRB1 CC Arg389 (3-4x receptor gain)
+      • ADRA2A GG (oscillation model)
+      • DBH AG (intermediate conversion)
+
+   🟡 HPA AXIS         █████████████████             MODERATE-HIGH
+      • FKBP5 TC (PTSD risk gene)
+      • Wildly variable CAR (47% to 200%)
+      • GR/MR receptor variants
+
+   🟡 SEROTONERGIC     ████████████                  MODERATE
+      • SLC6A4 CT
+      • TPH1 variants
+
+   🟢 GLUTAMATERGIC    ██████                        LOW-MODERATE
+      • Some GRM/GRIN variants
+      • Nothing dramatic
+
+   🟢 GABAergic        ████                          LOW
+      • No major GAD1/2 or GABRA variants
+      • SLC6A1 GG modest
+
++===============================================================================+
+\`\`\`
+
+### Why Dopaminergic/Noradrenergic >> Others
+
+\`\`\`
++===============================================================================+
+|                 WHY THIS HIERARCHY MAKES CLINICAL SENSE                        |
++===============================================================================+
+
+  1. THE DOPAMINERGIC STORY IS COMPLETE
+  ---------------------------------------------------------------------------
+
+  She has hits at EVERY level of dopamine signaling:
+
+       LEVEL               | FINDING                  | STATUS
+       --------------------|--------------------------|----------
+       Synthesis           | Low ferritin → TH        | IMPAIRED
+       Degradation         | MAO-B TT                 | TOO FAST
+       Receptors           | DRD2 rs6277 GA           | REDUCED
+       Metabolism          | COMT GA                  | Intermediate
+       Biomarker           | HVA 15.0 (high)          | CONFIRMED
+
+  This is NOT speculation - it's a coherent mechanistic chain with
+  lab confirmation.
+
+  ---------------------------------------------------------------------------
+
+  2. THE NORADRENERGIC STORY HAS PHARMACOGENOMIC VALIDATION
+  ---------------------------------------------------------------------------
+
+  ADRB1 rs1801253 CC (Arg389Arg) is one of the BEST-VALIDATED
+  pharmacogenomic markers in cardiovascular medicine.
+
+  The BEST trial showed:
+  - 38% mortality reduction in Arg389Arg homozygotes with bucindolol
+  - This receptor variant WILL respond to beta-blockers
+
+  ---------------------------------------------------------------------------
+
+  3. HPA IS A MODIFIER, NOT PRIMARY
+  ---------------------------------------------------------------------------
+
+  The FKBP5 TC and variable CAR suggest her HPA axis is dysregulated -
+  but this is likely DOWNSTREAM of the catecholamine issues.
+
+  Chronic noradrenergic instability → HPA dysfunction is well-established.
+  Treating the primary drivers may normalize HPA.
+
+  ---------------------------------------------------------------------------
+
+  4. WHY NOT GABAergic?
+  ---------------------------------------------------------------------------
+
+  - No pathogenic GAD1/2 variants (GABA synthesis is intact)
+  - No major GABRA receptor variants
+  - If GABA was primary, we'd expect:
+    • Benzo-responsive history
+    • More "generalized" anxiety pattern
+    • Likely alcohol sensitivity/use
+
+  Her pattern (fatigue + episodic anxiety + ADHD + non-restorative sleep)
+  fits dopamine/NE FAR better than GABA.
+
+  ---------------------------------------------------------------------------
+
+  5. WHY NOT SEROTONERGIC PRIMARY?
+  ---------------------------------------------------------------------------
+
+  - Only modest SLC6A4 variant
+  - TPH variants are common
+  - If serotonin was primary, we'd expect:
+    • Better SSRI response
+    • More depressive/rumination features
+    • Different sleep pattern (early waking, etc.)
+
++===============================================================================+
+\`\`\`
+
+---
+
+## 6. Competing Hypotheses
+
+### HYPOTHESIS A: Low Dopamine Anxiety (PFC-Mediated)
+
+\`\`\`
++===============================================================================+
+|                    HYPOTHESIS A: LOW DOPAMINE ANXIETY                          |
+|                         Evidence Grade: A                                      |
++===============================================================================+
+
+  MECHANISM:
+  ---------------------------------------------------------------------------
+
+  The prefrontal cortex (PFC) requires OPTIMAL dopamine to:
+    - Regulate emotions
+    - Inhibit the amygdala (fear center)
+    - Maintain executive function
+    - Filter irrelevant stimuli
+
+  When PFC dopamine is LOW:
+
+       +------------------------------------------+
+       |         PREFRONTAL CORTEX                |
+       |         (executive control)              |
+       |                                          |
+       |    LOW DOPAMINE (multiple causes)        |
+       |              |                           |
+       |              v                           |
+       |    Impaired top-down control             |
+       |              |                           |
+       |              v                           |
+       |    Cannot inhibit amygdala               |
+       +------------------------------------------+
+                      |
+                      v
+       +------------------------------------------+
+       |           AMYGDALA                       |
+       |         (fear center)                    |
+       |                                          |
+       |    UNCHECKED ACTIVITY                    |
+       |      - Hypervigilance                    |
+       |      - Catastrophic thinking             |
+       |      - Emotional dysregulation           |
+       |      - PTSD triggers easily activated    |
+       +------------------------------------------+
+
+  ---------------------------------------------------------------------------
+
+  THE TRIPLE HIT - WHY SHE HAS FUNCTIONALLY LOW DOPAMINE:
+  ---------------------------------------------------------------------------
+
+       HIT 1: IMPAIRED SYNTHESIS (Iron/TH Relationship)
+       ------------------------------------------------
+
+       Ferritin: 9 ng/mL (CRITICALLY LOW - was 151 in 2021, ref 16-232)
+
+       Tyrosine --[TH + IRON]--> L-DOPA --> Dopamine
+
+       TH (tyrosine hydroxylase) is the RATE-LIMITING STEP
+       TH requires IRON as a cofactor
+       Ferritin 9 ng/mL = SEVERELY impaired TH = MUCH LESS DOPAMINE MADE
+
+
+       HIT 2: RAPID DEGRADATION (MAO-B TT)
+       -----------------------------------
+
+       MAO-B rs1799836 TT = HIGH/FAST enzyme activity
+
+       Dopamine --[MAO-B TT FAST]--> DOPAL --> HVA
+
+       Whatever dopamine she makes gets RAPIDLY DESTROYED
+       HVA = 15.0 (HIGH) confirms this rapid turnover
+
+
+       HIT 3: RECEPTOR INSENSITIVITY (DRD2 rs6277)
+       -------------------------------------------
+
+       DRD2 rs6277 GA = REDUCED D2 receptor availability
+
+       This SNP affects DRD2 mRNA stability → fewer receptors
+       Even the dopamine that reaches the synapse CAN'T SIGNAL EFFECTIVELY
+
+  ---------------------------------------------------------------------------
+
+       THE COMPLETE DOPAMINE DEFICIT PICTURE:
+       --------------------------------------
+
+            LOW FERRITIN (26-30 ng/mL)
+                    |
+                    v
+            IMPAIRED TH (rate-limiting step)
+                    |
+                    v
+            LESS DOPAMINE SYNTHESIZED
+                    |
+                    +------> MAO-B TT (fast degradation)
+                    |                |
+                    |                v
+                    |        RAPID DESTRUCTION
+                    |                |
+                    v                v
+            +-------+--------+-------+
+            |                        |
+            v                        v
+         DEPLETED              HIGH HVA (15.0)
+         DOPAMINE              (the "exhaust" is high
+         POOL                   but the "tank" is empty)
+            |
+            +------> DRD2 rs6277 GA (fewer receptors)
+            |                |
+            |                v
+            v            IMPAIRED SIGNALING
+         FUNCTIONALLY LOW DOPAMINE
+            |
+            v
+         PFC CAN'T REGULATE AMYGDALA
+            |
+            v
+         ANXIETY, ADHD, BRAIN FOG
+
+  ---------------------------------------------------------------------------
+
+  IS THE FERRITIN/TH RELATIONSHIP MOOT BECAUSE HVA IS HIGH?
+  ---------------------------------------------------------------------------
+
+  NO - this is a KEY DISTINCTION:
+
+  High HVA = HIGH THROUGHPUT (dopamine being processed rapidly)
+
+  BUT throughput ≠ pool size
+
+  Think of it like a leaky bucket:
+    - Water flowing out fast (HVA high = rapid metabolism)
+    - But the bucket is never full (low synthesis + fast degradation)
+    - The FLOW is high, but the LEVEL is always low
+
+  The ferritin finding is NOT moot - it explains WHY she can't keep up
+  with the demand. She's synthesizing slowly AND degrading fast.
+
+  ---------------------------------------------------------------------------
+
+  SUPPORTING EVIDENCE IN HER DATA:
+  ---------------------------------------------------------------------------
+
+  [+] MAO-B rs1799836 TT = FAST dopamine degradation (Grade A)
+  [+] DRD2 rs6277 GA = reduced D2 receptor availability (Grade B)
+  [+] Ferritin CRITICALLY LOW (9 ng/mL, ref 16-232) = severely impaired TH
+  [+] HVA = 15.0 (HIGH) = confirms rapid dopamine turnover
+  [+] ADHD diagnosis = consistent with PFC hypodopaminergia
+  [+] Brain fog (MODERATE) = PFC dysfunction
+  [+] PTSD = amygdala hyperactivity / PFC underactivity
+
+  ---------------------------------------------------------------------------
+
+  WHAT THIS EXPLAINS:
+  ---------------------------------------------------------------------------
+
+  - Anxiety that feels "uncontrollable" (can't think your way out)
+  - Difficulty concentrating (ADHD pattern)
+  - Emotional reactivity
+  - Why she's TIRED but also ANXIOUS (not wired, just dysregulated)
+  - Brain fog
+
+  ---------------------------------------------------------------------------
+
+  WHAT THIS DOESN'T EXPLAIN:
+  ---------------------------------------------------------------------------
+
+  - Racing heart / palpitations (dopamine doesn't directly cause this)
+  - Physical symptoms of anxiety (need noradrenergic mechanism)
+
+  ---------------------------------------------------------------------------
+
+  THERAPEUTIC IMPLICATION:
+  ---------------------------------------------------------------------------
+
+  --> ADDRESS ALL THREE LEVELS:
+
+  1. SYNTHESIS: Optimize iron/ferritin (target >50 ng/mL)
+     - Check iron panel, supplement if needed
+     - L-tyrosine 500-1000mg morning (precursor)
+
+  2. DEGRADATION: Slow MAO-B
+     - Selegiline (MAO-B inhibitor) - see detailed section below
+     - Or natural MAO-B inhibitors (rhodiola, green tea)
+
+  3. RECEPTORS: May not be directly addressable, but increasing
+     dopamine availability helps overcome receptor deficit
+
++===============================================================================+
+\`\`\`
+
+### HYPOTHESIS B: Receptor-Amplified NE Response
+
+\`\`\`
++===============================================================================+
+|                    HYPOTHESIS B: RECEPTOR HYPERSENSITIVITY                     |
+|                         Evidence Grade: A                                      |
++===============================================================================+
+
+  MECHANISM:
+  ---------------------------------------------------------------------------
+
+  Her ADRB1 rs1801253 CC (Arg389Arg) = GAIN-OF-FUNCTION receptor
+
+  The Arg389 variant:
+    - Position 389 is in the INTRACELLULAR TAIL of the β1 receptor
+    - This region couples to Gs protein (stimulatory G protein)
+    - Arg389 = TIGHT coupling to Gs
+    - Produces 3-4x MORE cAMP per NE binding event
+    - Creates AMPLIFIED downstream response
+
+       NORMAL NE LEVELS
+             |
+             v
+    +------------------+
+    |  ADRB1 Arg389    |
+    |  (3-4x gain)     |
+    +------------------+
+             |
+             v
+    AMPLIFIED INTRACELLULAR SIGNALING
+             |
+    +--------+--------+
+    |        |        |
+    v        v        v
+  Heart    Blood   Arousal
+  rate UP  pressure systems
+
+  ---------------------------------------------------------------------------
+
+  THE MOLECULAR MECHANISM (FOR PSYCHIATRIST REVIEW):
+  ---------------------------------------------------------------------------
+
+       β1-ADRENERGIC RECEPTOR STRUCTURE
+       ---------------------------------
+
+       Extracellular (NE binds here)
+       ====================================
+              |     |     |
+              TM    TM    TM    ... (7 transmembrane domains)
+              |     |     |
+       ====================================
+       Intracellular
+              |
+              +---[position 389]---+
+              |                    |
+              v                    v
+         Gly389 (minor)       Arg389 (her genotype)
+              |                    |
+              v                    v
+         LOOSE Gs coupling    TIGHT Gs coupling
+              |                    |
+              v                    v
+         Normal cAMP           3-4x MORE cAMP
+         production            production
+              |                    |
+              v                    v
+         Normal response      AMPLIFIED response
+
+  ---------------------------------------------------------------------------
+
+  SUPPORTING EVIDENCE IN HER DATA:
+  ---------------------------------------------------------------------------
+
+  [+] ADRB1 rs1801253 CC = Arg389Arg homozygous (Grade A evidence)
+  [+] Racing heart / palpitations (MODERATE)
+  [+] Physical tension (MODERATE)
+  [+] VMA NORMAL but symptoms present = receptor issue, not production
+
+  ---------------------------------------------------------------------------
+
+  PHARMACOGENOMIC EVIDENCE - BETA-BLOCKERS:
+  ---------------------------------------------------------------------------
+
+  THE BEST TRIAL (Beta-Blocker Evaluation of Survival Trial):
+
+  - Studied bucindolol in heart failure patients
+  - Stratified by ADRB1 rs1801253 genotype
+
+  RESULTS:
+  ┌───────────────────────────────────────────────────────────────┐
+  │ Genotype        │ Mortality Reduction with Bucindolol         │
+  ├───────────────────────────────────────────────────────────────┤
+  │ Arg389Arg (CC)  │ 38% REDUCTION (p<0.001)                     │
+  │ Arg389Gly (CG)  │ Intermediate effect                        │
+  │ Gly389Gly (GG)  │ NO significant benefit                     │
+  └───────────────────────────────────────────────────────────────┘
+
+  Her genotype (CC = Arg389Arg) = STRONGEST predicted response
+
+  ---------------------------------------------------------------------------
+
+  PROPRANOLOL vs BUCINDOLOL:
+  ---------------------------------------------------------------------------
+
+  BUCINDOLOL:
+  - β1 + β2 blocker with mild sympatholytic activity
+  - BEST trial data (heart failure, not anxiety)
+  - Not commonly used for anxiety
+  - More evidence for Arg389 response specifically
+
+  PROPRANOLOL:
+  - β1 + β2 blocker (non-selective)
+  - DECADES of anxiety data
+  - Crosses blood-brain barrier = central + peripheral effects
+  - FDA-approved for performance/situational anxiety
+  - No Arg389-specific trials, but mechanism predicts response
+
+  RECOMMENDATION: PROPRANOLOL > BUCINDOLOL for anxiety
+
+  Rationale:
+  - Propranolol has far more anxiety-specific data
+  - The pharmacogenomic principle applies to both (same receptor)
+  - Propranolol is readily available and familiar to clinicians
+  - Bucindolol evidence is for heart failure, not anxiety
+
+  ---------------------------------------------------------------------------
+
+  WHAT THIS EXPLAINS:
+  ---------------------------------------------------------------------------
+
+  - Physical symptoms of anxiety (heart, tension)
+  - Why VMA is normal but she has symptoms
+  - Predicted good response to beta-blockers
+
+  ---------------------------------------------------------------------------
+
+  WHAT THIS DOESN'T EXPLAIN:
+  ---------------------------------------------------------------------------
+
+  - Why she's ALWAYS TIRED (if receptors are amplified, shouldn't she be wired?)
+  - ADHD / brain fog
+  - The cognitive/emotional aspects of anxiety
+
+  ---------------------------------------------------------------------------
+
+  THERAPEUTIC IMPLICATION:
+  ---------------------------------------------------------------------------
+
+  --> BLOCK THE HYPERACTIVE RECEPTORS
+
+  PROPRANOLOL 10-20mg BID
+
+  Why start low:
+  - Her receptors have 3-4x gain of function
+  - May need LOWER dose than typical
+  - High-gain receptors = exquisite sensitivity to blockade
+
+  Expected response:
+  - Reduced palpitations
+  - Reduced physical tension
+  - Possibly improved sleep quality
+  - May NOT address cognitive/emotional anxiety components
+
++===============================================================================+
+\`\`\`
+
+### HYPOTHESIS C: Unstable NE - The Oscillation Model
+
+\`\`\`
++===============================================================================+
+|                    HYPOTHESIS C: UNSTABLE NE REGULATION                        |
+|                         Evidence Grade: B                                      |
++===============================================================================+
+
+  MECHANISM:
+  ---------------------------------------------------------------------------
+
+  This hypothesis integrates ADRA2A rs553668 GG (receptor overexpression)
+  with the other findings.
+
+  Alpha-2A receptors are PRESYNAPTIC AUTORECEPTORS:
+    - They sense NE in the synapse
+    - When activated, they INHIBIT further NE release
+    - This is NEGATIVE FEEDBACK
+
+  With OVEREXPRESSION of these autoreceptors:
+
+       +--------------------------------------------------+
+       |                                                  |
+       |  ADRA2A OVEREXPRESSION (rs553668 GG)            |
+       |                                                  |
+       |  --> MORE autoreceptors on presynaptic neuron   |
+       |  --> EXCESSIVE negative feedback                |
+       |  --> Baseline NE release SUPPRESSED             |
+       |                                                  |
+       +--------------------------------------------------+
+                          |
+                          v
+       +--------------------------------------------------+
+       |                                                  |
+       |  CHRONIC LOW NE STATE                           |
+       |                                                  |
+       |  --> Postsynaptic receptors UPREGULATE          |
+       |      (compensation)                             |
+       |  --> System becomes HYPERSENSITIVE              |
+       |  --> ADRB1 Arg389 AMPLIFIES this further        |
+       |                                                  |
+       +--------------------------------------------------+
+                          |
+                          v
+       +--------------------------------------------------+
+       |                                                  |
+       |  WHEN STRESS TRIGGERS NE RELEASE:               |
+       |                                                  |
+       |  --> Even small NE burst is MASSIVELY AMPLIFIED |
+       |  --> Hypersensitive + gain-of-function receptor |
+       |  --> SPIKE response (anxiety, palpitations)     |
+       |  --> Then back to LOW baseline (fatigue)        |
+       |                                                  |
+       +--------------------------------------------------+
+
+  ---------------------------------------------------------------------------
+
+  THE OSCILLATION PATTERN:
+  ---------------------------------------------------------------------------
+
+        NE LEVEL
+           ^
+           |     SPIKE!        SPIKE!
+           |       /\\            /\\
+           |      /  \\          /  \\
+           |     /    \\        /    \\
+    Normal |----/------\\------/------\\----
+           |  LOW      LOW   LOW      LOW
+           |  baseline baseline
+           +---------------------------------> Time
+
+  She oscillates between:
+    - LOW baseline (fatigue, depression, can't get going)
+    - SPIKE responses (anxiety, racing heart, panic)
+
+  ---------------------------------------------------------------------------
+
+  SUPPORTING EVIDENCE IN HER DATA:
+  ---------------------------------------------------------------------------
+
+  [+] ADRA2A rs553668 GG = receptor overexpression (Grade B)
+  [+] ADRB1 Arg389 = amplifies any NE that gets through (Grade A)
+  [+] ALWAYS tired = low baseline NE
+  [+] MODERATE (not constant) palpitations = episodic spikes
+  [+] CAR% volatile (47% --> 200%) = unstable stress response system
+  [+] PTSD = stress triggers cause exaggerated responses
+
+  ---------------------------------------------------------------------------
+
+  RESEARCH SUPPORT:
+  ---------------------------------------------------------------------------
+
+  From chronic stress/depression studies:
+
+  "Chronic unpredictable mild stress (CUMS) significantly INCREASED
+   protein expression levels of alpha-2A-AR in the hypothalamus...
+   and DECREASED the release of NE"
+
+  "Blockade of the inhibitory action of EXCESSIVE alpha-2A-adrenergic
+   receptors in the CUMS rats could INCREASE the level of NE...
+   which is effective in the treatment of depressive disorders."
+
+  Source: Frontiers in Neuroscience (2017)
+
+  ---------------------------------------------------------------------------
+
+  WHAT THIS EXPLAINS:
+  ---------------------------------------------------------------------------
+
+  - Why she's ALWAYS TIRED (baseline NE suppressed)
+  - Why she has SEVERE ANXIETY (spikes are amplified)
+  - Why palpitations are MODERATE not constant (episodic)
+  - The PTSD pattern (triggers --> exaggerated response)
+  - Volatile CAR% (unstable regulatory system)
+  - Non-restorative sleep (oscillations continue at night)
+
+  THE KEY INSIGHT: This model explains the paradox of
+  ALWAYS TIRED + SEVERE ANXIETY coexisting
+
+  ---------------------------------------------------------------------------
+
+  THERAPEUTIC IMPLICATION:
+  ---------------------------------------------------------------------------
+
+  --> STABILIZE THE SYSTEM
+
+  This is more complex than "block" or "boost":
+
+  Option 1: Alpha-2 AGONIST (clonidine, guanfacine)
+    - Paradoxically, stimulating the overexpressed autoreceptors
+      at LOW DOSES can stabilize the system
+    - Used in ADHD and PTSD for this reason
+    - Reduces NE spikes, smooths out oscillations
+
+  Option 2: Beta-blocker for SPIKES only (propranolol)
+    - Doesn't fix baseline, but blunts the spike responses
+    - May help physical symptoms
+
+  Option 3: Address underlying dopamine deficit
+    - If PFC has more dopamine, better top-down regulation
+    - May reduce the "trigger sensitivity"
+
++===============================================================================+
+\`\`\`
+
+### HYPOTHESIS D: Combined Model (Most Likely)
+
+\`\`\`
++===============================================================================+
+|                    HYPOTHESIS D: COMBINED / INTEGRATIVE MODEL                  |
+|                         Evidence Grade: A-                                     |
++===============================================================================+
+
+  REALITY: These mechanisms are NOT mutually exclusive.
+
+  She likely has ALL THREE operating simultaneously:
+
+  ---------------------------------------------------------------------------
+
+  LAYER 1: DOPAMINE DEPLETION (Foundation)
+  ---------------------------------------------------------------------------
+
+       Critically low ferritin (9 ng/mL) + MAO-B TT + DRD2 GA
+            |
+            v
+       SEVERELY LOW DOPAMINE
+            |
+            v
+       - Poor executive function
+       - Can't regulate emotions
+       - Amygdala unchecked
+       - ADHD symptoms
+       - Brain fog
+
+  ---------------------------------------------------------------------------
+
+  LAYER 2: UNSTABLE NE REGULATION (Dysregulation)
+  ---------------------------------------------------------------------------
+
+       ADRA2A overexpression + DBH intermediate activity
+            |
+            v
+       DBH AG = Less dopamine converted to NE (lower synthesis)
+            +
+       ADRA2A GG = Excessive presynaptic inhibition (lower release)
+            =
+       DOUBLE HIT on baseline NE:
+       - Less NE made (DBH)
+       - Less NE released (ADRA2A)
+       - This explains why VMA is NORMAL (2.9) despite symptoms
+       - LOW baseline → compensatory receptor upregulation
+       - System primed for SPIKES when stress triggers release
+
+  ---------------------------------------------------------------------------
+
+  LAYER 3: RECEPTOR AMPLIFICATION (The Multiplier)
+  ---------------------------------------------------------------------------
+
+       ADRB1 Arg389Arg
+            |
+            v
+       - Any NE that gets through = 3-4x amplified
+       - Small spikes become BIG responses
+       - Physical symptoms out of proportion to actual NE
+
+  ---------------------------------------------------------------------------
+
+  LAYER 4: PERIMENOPAUSE AMPLIFICATION ⭐ NEW IN V4
+  ---------------------------------------------------------------------------
+
+       SEX HORMONE STATUS:
+       - FSH: 75-104 mIU/mL (MENOPAUSAL RANGE, ref <25 reproductive)
+       - AMH: <0.015 ng/mL (UNDETECTABLE - no ovarian reserve)
+       - Serum E2: 182 pg/mL (adequate, likely from HRT)
+       - **Urine E2: 0.92 ng/mg** (LOW, ref 1.8-4.5) ← tissue-level estrogen LOW
+       - SHBG: 130-191 nmol/L (ELEVATED - binding estrogen)
+
+       THE ESTROGEN-MAO CONNECTION:
+       ---------------------------
+       Estrogen NATURALLY INHIBITS MAO-B activity (well-established).
+
+       With perimenopause (low tissue estrogen):
+       - MAO-B loses estrogenic brake
+       - Already FAST enzyme (TT genotype) becomes even FASTER
+       - Result: ACCELERATED dopamine degradation beyond genetic expectation
+
+       DOUBLE HIT TO DOPAMINE:
+       ----------------------
+
+            GENETIC:       HORMONAL:
+            MAO-B TT       Low Estrogen (urine E2 0.92)
+            (fast)         (removes MAO brake)
+               |               |
+               v               v
+               +-------+-------+
+                       |
+                       v
+               ACCELERATED MAO-B
+               (faster than TT alone)
+                       |
+                       v
+               SEVERE DOPAMINE DEPLETION
+               (worse than genetics predict)
+
+       THIS EXPLAINS:
+       - Why her dopamine symptoms may be more severe than expected from genetics alone
+       - Why symptoms may have worsened with perimenopause onset
+       - Why addressing estrogen could help CATECHOLAMINE stability
+
+  ---------------------------------------------------------------------------
+
+  THE COMBINED PICTURE (V4 - WITH HORMONAL LAYER):
+  ---------------------------------------------------------------------------
+
+       +-----------------------------------------------------------+
+       |                                                           |
+       |   LOW DOPAMINE --> Can't regulate emotions (PFC down)     |
+       |          +                                                |
+       |   UNSTABLE NE --> Oscillates between low and spike        |
+       |          +                                                |
+       |   AMPLIFIED RESPONSE --> Spikes feel massive              |
+       |          +                                                |
+       |   LOW ESTROGEN --> Removes MAO brake (worsens all above)  |
+       |          =                                                |
+       |                                                           |
+       |   ALWAYS TIRED + SEVERE ANXIETY + PALPITATIONS            |
+       |   + LOW LIBIDO (estrogen effect)                          |
+       |                                                           |
+       |   A dysregulated system amplified by perimenopause        |
+       |                                                           |
+       +-----------------------------------------------------------+
+
+  ---------------------------------------------------------------------------
+
+  WHY "ALWAYS TIRED" + "SEVERE ANXIETY" CAN COEXIST:
+  ---------------------------------------------------------------------------
+
+  This seems paradoxical but makes sense with the combined model:
+
+  TIRED because:
+    - Low baseline NE (ADRA2A excessive inhibition)
+    - Low dopamine (MAO-B depletion + low iron)
+    - System is EXHAUSTED from oscillations
+    - Non-restorative sleep (never fully recovers)
+
+  ANXIOUS because:
+    - Low dopamine = PFC can't regulate amygdala
+    - When NE spikes occur, they're AMPLIFIED (ADRB1)
+    - Hypersensitive system = normal stressors feel huge
+    - PTSD primes the system for threat detection
+
+  She's not "wired" - she's DYSREGULATED.
+
++===============================================================================+
+\`\`\`
+
+---
+
+## 7. Brain Energy Deficit & Catecholamine Intersection
+
+\`\`\`
++===============================================================================+
+|          BRAIN ENERGY DEFICIT: THE METABOLIC-NEUROLOGICAL INTERSECTION         |
+|                    (APOE4 / IRS1 / Ferritin Integration)                       |
++===============================================================================+
+
+  This section explores how her brain metabolic genetics may be AMPLIFYING
+  or CONTRIBUTING to the catecholamine dysfunction.
+
+  ---------------------------------------------------------------------------
+
+  HER BRAIN ENERGY RISK PROFILE:
+  ---------------------------------------------------------------------------
+
+  GENE    | SNP         | Genotype | Finding
+  --------|-------------|----------|----------------------------------------
+  APOE    | rs429358/   | CT/CC    | APOE ε3/ε4 carrier
+          | rs7412      |          | ONE ε4 allele present ⚠️
+  --------|-------------|----------|----------------------------------------
+  IRS1    | rs2943641   | CC       | Insulin signaling risk
+          | rs2943640   | CC       | Insulin signaling risk
+          | rs2943634   | CC       | Risk ("higher ischemic stroke risk")
+  --------|-------------|----------|----------------------------------------
+  ADRA2A  | rs553668    | GG       | Also affects INSULIN SECRETION
+          |             |          | (not just NE)
+
+  ---------------------------------------------------------------------------
+
+  THE APOE4 CONNECTION:
+  ---------------------------------------------------------------------------
+
+  APOE ε4 is associated with:
+    - REDUCED brain glucose metabolism
+    - Impaired neuronal energy production
+    - Increased risk of Alzheimer's disease
+    - Altered lipid transport in the brain
+
+  In her case (ε3/ε4 heterozygote):
+    - One functioning ε3 allele
+    - One impaired ε4 allele
+    - Intermediate risk, but STILL relevant
+
+  HOW THIS AFFECTS CATECHOLAMINES:
+
+       APOE4 --> Impaired brain glucose uptake
+                        |
+                        v
+              Reduced ATP production
+                        |
+         +--------------+--------------+
+         |              |              |
+         v              v              v
+    Less energy    Less energy    Less energy
+    for TH         for vesicle    for reuptake
+    activity       packaging      transporters
+         |              |              |
+         v              v              v
+    Impaired       Impaired       Impaired
+    DA synthesis   DA storage     DA recycling
+
+  ---------------------------------------------------------------------------
+
+  THE IRS1 CONNECTION:
+  ---------------------------------------------------------------------------
+
+  IRS1 (Insulin Receptor Substrate 1) is critical for:
+    - Insulin signaling in the brain
+    - Neuronal glucose uptake
+    - Synaptic plasticity
+    - Memory and cognition
+
+  Her IRS1 risk variants (rs2943641 CC, rs2943640 CC, rs2943634 CC):
+    - May impair brain insulin signaling
+    - Could reduce neuronal energy availability
+    - Associated with cognitive decline risk
+
+  ---------------------------------------------------------------------------
+
+  THE ADRA2A - INSULIN CONNECTION:
+  ---------------------------------------------------------------------------
+
+  IMPORTANT: The ADRA2A rs553668 GG variant we discussed for NE
+  ALSO affects insulin secretion.
+
+  ADRA2A receptors on pancreatic beta cells:
+    - Inhibit insulin release when activated
+    - Her variant = overexpression
+    - May cause dysregulated insulin secretion
+
+  This creates a SYSTEMIC pattern:
+    - Altered insulin release (ADRA2A)
+    - Impaired insulin signaling (IRS1)
+    - Reduced glucose uptake (APOE4)
+    = BRAIN ENERGY DEFICIT
+
+  ---------------------------------------------------------------------------
+
+  THE FERRITIN CONNECTION TO BRAIN ENERGY:
+  ---------------------------------------------------------------------------
+
+  Ferritin is not just about dopamine synthesis:
+    - Iron is essential for mitochondrial function
+    - Cytochrome c oxidase (Complex IV) requires iron
+    - Low iron = impaired oxidative phosphorylation
+
+  Her ferritin trend (151 → 9 ng/mL over 4 years):
+    - Progressive severe decline
+    - Now BELOW reference range (16-232)
+    - May indicate chronic iron loss, poor absorption, or heavy menstruation
+    - Affects BOTH dopamine synthesis AND energy production
+
+  ---------------------------------------------------------------------------
+
+  THE INTEGRATED BRAIN ENERGY MODEL:
+  ---------------------------------------------------------------------------
+
+       ┌─────────────────────────────────────────────────────────┐
+       │                  BRAIN ENERGY DEFICIT                    │
+       │                                                          │
+       │   APOE4 ──────────┐                                     │
+       │   (glucose uptake)|                                     │
+       │                   │                                     │
+       │   IRS1 risk ──────┼──> IMPAIRED NEURONAL               │
+       │   (insulin signal)|    ENERGY AVAILABILITY             │
+       │                   │                                     │
+       │   Low Ferritin ───┘                                     │
+       │   (mitochondria)                                        │
+       │                                                          │
+       └────────────────────────┬────────────────────────────────┘
+                                |
+                                v
+       ┌─────────────────────────────────────────────────────────┐
+       │            DOWNSTREAM EFFECTS ON CATECHOLAMINES          │
+       │                                                          │
+       │   1. IMPAIRED NEUROTRANSMITTER SYNTHESIS                │
+       │      - TH requires ATP + iron for dopamine              │
+       │      - DBH requires ATP for NE conversion               │
+       │                                                          │
+       │   2. IMPAIRED VESICULAR PACKAGING                        │
+       │      - VMAT2 requires ATP to load vesicles              │
+       │                                                          │
+       │   3. IMPAIRED REUPTAKE                                   │
+       │      - DAT/NET require ATP                              │
+       │      - May lead to EXTRACELLULAR accumulation           │
+       │        followed by rapid degradation                     │
+       │                                                          │
+       │   4. OXIDATIVE STRESS                                    │
+       │      - Energy deficit → ROS production                  │
+       │      - Catecholamines are oxidation-sensitive           │
+       │      - May accelerate degradation                        │
+       │                                                          │
+       └─────────────────────────────────────────────────────────┘
+                                |
+                                v
+       ┌─────────────────────────────────────────────────────────┐
+       │                  CLINICAL MANIFESTATION                  │
+       │                                                          │
+       │   Energy deficit + catecholamine dysfunction =           │
+       │                                                          │
+       │   • Profound fatigue (double hit)                       │
+       │   • Brain fog (PFC energy + dopamine deficit)           │
+       │   • Unstable anxiety (system can't maintain homeostasis)│
+       │   • Non-restorative sleep (can't fully recover)         │
+       │   • ADHD-like symptoms (PFC underperformance)           │
+       │                                                          │
+       └─────────────────────────────────────────────────────────┘
+
+  ---------------------------------------------------------------------------
+
+  DOES THIS AFFECT THE HYPOTHESES?
+  ---------------------------------------------------------------------------
+
+  YES - the brain energy deficit may be a CONTRIBUTING FACTOR to all three:
+
+  HYPOTHESIS A (Low Dopamine):
+    - Energy deficit impairs TH even beyond iron deficiency
+    - Makes the MAO-B TT problem worse (less synthesis, same degradation)
+
+  HYPOTHESIS B (Receptor Amplification):
+    - Energy deficit doesn't directly affect receptor function
+    - But may affect downstream signaling cascades
+
+  HYPOTHESIS C (NE Oscillation):
+    - Energy deficit may make the system MORE unstable
+    - Less capacity to maintain homeostasis
+    - Wider swings between baseline and spike
+
+  ---------------------------------------------------------------------------
+
+  THERAPEUTIC IMPLICATIONS:
+  ---------------------------------------------------------------------------
+
+  1. METABOLIC SUPPORT IS FOUNDATIONAL
+
+     Before or alongside catecholamine-targeted therapy:
+     - Optimize ferritin (target >50 ng/mL)
+     - Consider ketogenic elements (APOE4 benefit from ketones)
+     - B vitamins (energy metabolism cofactors)
+     - CoQ10 (mitochondrial support)
+     - Alpha-lipoic acid (insulin sensitizer + antioxidant)
+
+  2. INSULIN SENSITIZERS MAY HELP
+
+     Given her IRS1 risk variants:
+     - Berberine (natural insulin sensitizer)
+     - Low glycemic diet
+     - Time-restricted eating
+     - Consider metformin discussion with MD (brain insulin sensitization)
+
+  3. APOE4 CONSIDERATIONS
+
+     - MCT oil / ketone supplementation
+       (provides alternative brain fuel)
+     - Omega-3s (DHA important for APOE4)
+     - Avoid high saturated fat (APOE4-specific risk)
+
+  ---------------------------------------------------------------------------
+
+  CAVEAT:
+  ---------------------------------------------------------------------------
+
+  This section is more SPECULATIVE than the catecholamine analysis.
+
+  The brain energy connections are:
+    - Mechanistically plausible
+    - Supported by her genetics
+    - But NOT directly validated by specific biomarkers
+
+  Consider this a "layer" to keep in mind, not a primary treatment target.
+
++===============================================================================+
+\`\`\`
+
+---
+
+## 8. Perimenopause & Hormonal Amplification
+
+### ⭐ NEW IN V4 - The Missing Link to Dopamine Severity
+
+\`\`\`
++===============================================================================+
+|                    PERIMENOPAUSE & HORMONAL AMPLIFICATION                      |
+|                    Why This Makes Her MAO-B Problem WORSE                      |
++===============================================================================+
+
+  SEX HORMONE LABORATORY DATA:
+  ---------------------------------------------------------------------------
+
+  | Marker           | Value              | Reference Range     | Status      |
+  |------------------|--------------------|--------------------|-------------|
+  | FSH              | 75-104 mIU/mL      | <25 (reproductive) | MENOPAUSAL  |
+  | AMH              | <0.015 ng/mL       | 1.0-3.5            | UNDETECTABLE|
+  | Serum E2         | 182 pg/mL          | 30-400             | Adequate*   |
+  | **Urine E2**     | **0.92 ng/mg**     | **1.8-4.5**        | **LOW**     |
+  | SHBG             | 130-191 nmol/L     | 18-114             | ELEVATED    |
+  | β-glucuronidase  | 6281 U/g           | 839-2398           | HIGH (2.6x) |
+
+  *CRITICAL PARADOX: Serum E2 appears adequate (182), but URINE E2 is LOW (0.92)
+
+  ---------------------------------------------------------------------------
+
+  WHY SERUM ESTROGEN ≠ TISSUE ESTROGEN (The Binding Problem):
+  ---------------------------------------------------------------------------
+
+  SHBG = 130-191 nmol/L (ELEVATED, ref 18-114)
+
+       Total Estrogen (182 pg/mL in serum)
+                |
+                v
+       +--------+--------+
+       |                 |
+       v                 v
+   BOUND to SHBG      FREE (bioavailable)
+   (most of it)       (very little)
+       |                 |
+       v                 v
+   INACTIVE          ACTIVE
+   (can't enter      (enters cells,
+    cells)            hits receptors)
+
+  Her SHBG is binding most of her estrogen → less reaches tissues
+  This explains why URINE E2 (tissue exposure marker) is LOW despite
+  adequate SERUM E2.
+
+  ---------------------------------------------------------------------------
+
+  THE GUT-ESTROGEN RECIRCULATION PROBLEM:
+  ---------------------------------------------------------------------------
+
+  β-glucuronidase = 6281 U/g (HIGH, 2.6x upper limit)
+
+  In the gut:
+       Conjugated estrogen (inactive, ready for excretion)
+                |
+                v
+       β-glucuronidase (HER: 2.6x HIGH)
+                |
+                v
+       DECONJUGATED (reactivated)
+                |
+                v
+       REABSORBED into circulation
+                |
+                v
+       STILL GETS BOUND by SHBG
+                |
+                v
+       STILL NOT BIOAVAILABLE
+
+  So: High β-glucuronidase recirculates estrogen, but SHBG captures it.
+  Net result: Still low tissue-level estrogen despite "adequate" serum levels.
+
+  ---------------------------------------------------------------------------
+
+  THE ESTROGEN-MAO CONNECTION (WHY THIS MATTERS FOR HER ANXIETY):
+  ---------------------------------------------------------------------------
+
+  ESTABLISHED SCIENCE: Estrogen NATURALLY INHIBITS MAO activity
+
+  Mechanism:
+  - Estrogen downregulates MAO-B gene expression
+  - Estrogen increases dopamine receptor sensitivity
+  - This is why perimenopause often triggers/worsens depression, anxiety, ADHD
+
+  IN HER CASE:
+
+       BASELINE:               WHAT'S HAPPENING NOW:
+       --------                --------------------
+
+       Estrogen -----→         LOW TISSUE ESTROGEN
+            |                        |
+            ↓                        ↓
+       Inhibits MAO-B          MAO-B UNINHIBITED
+            |                        |
+            ↓                        ↓
+       Slower degradation      FASTER degradation
+            |                        |
+            ↓                        ↓
+       Normal dopamine         DEPLETED dopamine
+
+
+  THE FOUR-WAY CONVERGENCE (Why Her Dopamine Is SEVERELY Low):
+  ---------------------------------------------------------------------------
+
+       GENETIC FACTOR 1:       GENETIC FACTOR 2:       GENETIC FACTOR 3:
+       MAO-B TT genotype       Low Ferritin            DRD2 rs6277 GA
+       (fast degradation)      (9 ng/mL - impairs TH)  (fewer receptors)
+            |                        |                        |
+            v                        v                        v
+            +------------------------+------------------------+
+                                     |
+                                     +--------+
+                                              |
+                                              v
+                         HORMONAL FACTOR (Perimenopause):
+                         Low tissue estrogen (urine E2 = 0.92)
+                         (removes MAO brake)
+                                              |
+                                              v
+                         +===========================================+
+                         |    QUADRUPLE HIT TO DOPAMINE              |
+                         |                                           |
+                         |    1. Less made (low ferritin → low TH)   |
+                         |    2. Faster destroyed (MAO-B TT)         |
+                         |    3. EVEN faster destroyed (no estrogen  |
+                         |       brake)                              |
+                         |    4. Can't signal effectively (DRD2 GA)  |
+                         |                                           |
+                         |    = SEVERE FUNCTIONAL HYPODOPAMINERGIA   |
+                         +===========================================+
+
+  ---------------------------------------------------------------------------
+
+  THE FERRITIN CRASH - NOW EXPLAINED:
+  ---------------------------------------------------------------------------
+
+  PATTERN: Ferritin 151 ng/mL (2021) → 9 ng/mL (2025) - 94% decline!
+
+  QUESTION WE ASKED: Why did ferritin crash so dramatically?
+
+  PERIMENOPAUSE ANSWER:
+  ---------------------------------------------------------------------------
+
+  Perimenopausal bleeding patterns:
+  - Irregular cycles (sometimes heavy, sometimes skipped)
+  - Prolonged bleeding episodes
+  - Unpredictable heavy flow days
+  - Often NOT recognized as "heavy" by patients who've normalized it
+
+  Iron loss:
+  - Each mL of menstrual blood = ~0.5mg iron
+  - Heavy perimenopausal bleeding can deplete iron over months to years
+  - Patient may not realize iron stores are critically draining
+
+  THIS CONNECTS TO HER SYMPTOMS:
+  - Ferritin crash likely COINCIDES with perimenopause onset
+  - Creates a VICIOUS CYCLE:
+    → Perimenopause → heavy/irregular bleeding → iron loss
+    → Low iron → can't make dopamine
+    → Low estrogen → faster dopamine destruction
+    → BOTH hitting dopamine from opposite directions
+
+  ---------------------------------------------------------------------------
+
+  LIBIDO - THE ESTROGEN-DOPAMINE CONNECTION:
+  ---------------------------------------------------------------------------
+
+  Patient Goal #2: "Sex drive"
+
+  This is NOT just about "hormone replacement for libido"
+
+  The mechanism:
+  1. Dopamine = THE libido neurotransmitter (desire, motivation, reward)
+  2. Her dopamine is severely depleted (quad hit above)
+  3. Estrogen also directly affects vaginal tissue, arousal response
+  4. Low estrogen + low dopamine = DOUBLE hit to libido
+
+  Fixing libido requires addressing BOTH:
+  - Estrogen optimization (tissue delivery, not just serum)
+  - Dopamine support (iron + MAO-B inhibition)
+
++===============================================================================+
+\`\`\`
+
+### Therapeutic Integration: Hormone Optimization
+
+\`\`\`
++===============================================================================+
+|                    HORMONE OPTIMIZATION PROTOCOL                               |
+|                    (From GP Patient Hormone Analysis)                          |
++===============================================================================+
+
+  PREREQUISITE: GUT OPTIMIZATION FIRST
+  ---------------------------------------------------------------------------
+
+  Current issues:
+  - β-glucuronidase: 6281 U/g (2.6x high)
+  - Fusobacterium: 66x overgrown (β-glucuronidase producer)
+
+  If estrogen is given without fixing gut:
+  → Estrogen gets recirculated by high β-glucuronidase
+  → But SHBG still captures it
+  → Poor tissue delivery persists
+
+  GUT FIX PROTOCOL (do BEFORE or WITH hormone optimization):
+  ---------------------------------------------------------------------------
+  1. Berberine 500mg 2x/day for 4-6 weeks
+     - Reduces Fusobacterium
+     - Lowers β-glucuronidase activity
+     - Also helps insulin sensitivity (IRS1 variants)
+
+  2. Retest β-glucuronidase after 4-6 weeks
+     - Target: <2398 U/g (within range)
+
+  ---------------------------------------------------------------------------
+
+  ESTROGEN OPTIMIZATION: PHYSIOLOGIC CYCLING PROTOCOL
+  ---------------------------------------------------------------------------
+
+  Current problem: FLAT estrogen at ~182 pg/mL (likely from steady-state HRT)
+
+  This is NOT how estrogen naturally works.
+
+  Natural cycle pattern:
+  - Days 1-5: Low (~30-50 pg/mL) - menstruation
+  - Days 6-10: Rising (~50-150 pg/mL) - follicular
+  - Days 11-14: PEAK (250-550 pg/mL) - ovulation / LIBIDO WINDOW
+  - Days 15-28: Moderate then falling (~100-200 pg/mL) - luteal
+
+  PHYSIOLOGIC CYCLING WITH ESTROGEN CLICKER CREAM:
+  ---------------------------------------------------------------------------
+
+  | Days    | Dose     | Clicks | Target E2      | Phase         |
+  |---------|----------|--------|----------------|---------------|
+  | 1-5     | 0.5 mg   | 1      | 50-100 pg/mL   | Early         |
+  | 6-10    | 1.0 mg   | 2      | 100-200 pg/mL  | Mid-follicular|
+  | 11-14   | 1.5-2 mg | 3-4    | 250-550 pg/mL  | LIBIDO WINDOW |
+  | 15-28   | 0.75-1 mg| 1.5-2  | Taper back     | Luteal        |
+
+  Why cycling matters:
+  - Natural rhythm supports neurotransmitter regulation
+  - PEAK estrogen (days 11-14) provides MAO inhibition when needed
+  - May improve libido, mood, anxiety during peak
+  - Better matches receptor sensitivity patterns
+
+  ---------------------------------------------------------------------------
+
+  MONITORING:
+  ---------------------------------------------------------------------------
+
+  At baseline:
+  - Serum E2 (for reference)
+  - SHBG (if still elevated, consider factors reducing it)
+  - Document symptoms: anxiety, libido, energy, brain fog
+
+  At 6-8 weeks:
+  - Repeat serum E2 at different cycle points
+  - Consider DUTCH again to see if URINE E2 improves
+  - Symptom tracking
+
+  Target:
+  - Mid-cycle serum E2: 250-550 pg/mL (vs current flat 182)
+  - Improved urine E2 (currently 0.92, target >1.8)
+  - Symptom improvement in libido, anxiety, energy
+
+  ---------------------------------------------------------------------------
+
+  CAUTIONS:
+  ---------------------------------------------------------------------------
+
+  1. Discuss with prescribing MD - this is more nuanced than standard HRT
+  2. Monitor for estrogen excess signs (breast tenderness, bloating)
+  3. May need progesterone adjustment to balance
+  4. Individual response varies - this is iterative
+
++===============================================================================+
+\`\`\`
+
+---
+
+## 9. Integrative Model
+
+### The Complete Mechanistic Picture (V4 - WITH HORMONAL LAYER)
+
+\`\`\`
++===============================================================================+
+|                    THE COMPLETE MECHANISTIC PICTURE (V4)                       |
+|                    Now Including Hormonal Amplification                        |
++===============================================================================+
+
+                    ┌─────────────────────────────────┐
+                    │     BRAIN ENERGY DEFICIT        │
+                    │   APOE4 + IRS1 + Low Ferritin   │
+                    └───────────────┬─────────────────┘
+                                    │
+      ┌─────────────────────────────┴──────────────────────────────┐
+      │                                                            │
+      ▼                                                            ▼
+┌─────────────────────────┐                     ┌─────────────────────────────┐
+│    PERIMENOPAUSE        │                     │      TYROSINE               │
+│  (NEW IN V4)            │                     │         |                   │
+├─────────────────────────┤                     │         v                   │
+│ FSH: 75-104 (menopause) │                     │  [TH + IRON (LOW)]          │
+│ Urine E2: 0.92 (LOW)    │                     │         |                   │
+│ SHBG: 130-191 (binding) │                     │         v                   │
+│ β-gluc: 6281 (recycling)│                     │      L-DOPA                 │
+└───────────┬─────────────┘                     │         |                   │
+            │                                   │         v                   │
+            │                                   │     DOPAMINE ───────────────┤
+            ▼                                   └─────────────────────────────┘
+   LOW TISSUE ESTROGEN                                    │
+            │                                             │
+            │        ┌────────────────────────────────────┘
+            │        │
+            ▼        ▼
+    ┌───────────────────────────┐
+    │   MAO-B TT (FAST)         │
+    │   + NO ESTROGEN BRAKE     │ ← DOUBLE HIT
+    │   = ACCELERATED BREAKDOWN │
+    └───────────────┬───────────┘
+                    │
+                    ▼
+            HVA HIGH (15.0)
+            "High exhaust, empty tank"
+                    │
+                    ▼
+     ┌──────────────┴──────────────┐
+     │                             │
+     ▼                             ▼
+  LOW SYNAPTIC              DBH AG → LESS NE
+  DOPAMINE                        │
+     │                             │
+     ├─── DRD2 GA ───┐             ├─── ADRA2A GG
+     │  (fewer       │             │    (autoinhibit)
+     │   receptors)  │             │         │
+     ▼               ▼             ▼         ▼
+  PFC DYSFUNCTION   IMPAIRED    LOW NE    EXCESSIVE
+     │              SIGNALING   BASELINE  INHIBITION
+     │                             │         │
+     ▼                             └────┬────┘
+  CAN'T REGULATE                        │
+  AMYGDALA                              ▼
+     │                            ADRB1 CC (Arg389)
+     │                                  │
+     │                                  ▼
+     │                            3-4x AMPLIFIED
+     │                            NE RESPONSE
+     │                                  │
+     └──────────────────┬───────────────┘
+                        │
+                        ▼
+  +=====================================================+
+  |              COMBINED PHENOTYPE (V4)                |
+  +=====================================================+
+  |                                                     |
+  |   ⚡ ALWAYS TIRED (low baseline DA + NE)           |
+  |   😰 SEVERE ANXIETY (spikes + no control)          |
+  |   💓 PALPITATIONS (amplified NE spikes)            |
+  |   🧠 BRAIN FOG (PFC hypofunction)                  |
+  |   😴 NON-RESTORATIVE SLEEP (oscillations)          |
+  |   📊 VOLATILE CAR (unstable HPA)                   |
+  |   💔 LOW LIBIDO (estrogen + dopamine effect) ← NEW |
+  |                                                     |
+  +=====================================================+
+                        │
+                        ▼
+                   PTSD/ADHD
+                   PHENOTYPE
+                   + PERIMENOPAUSE
+
++===============================================================================+
+\`\`\`
+
+---
+
+## 10. Therapeutic Implications
+
+### MAO-B Inhibitor Ladder
+
+\`\`\`
++===============================================================================+
+|                    MAO-B INHIBITOR OPTIONS                                     |
+|                    (For Dopamine Preservation)                                 |
++===============================================================================+
+
+  RATIONALE:
+  ---------------------------------------------------------------------------
+  Her MAO-B TT genotype = FAST enzyme activity = rapid dopamine degradation
+
+  MAO-B inhibitors SLOW this degradation, preserving synaptic dopamine.
+
+  ---------------------------------------------------------------------------
+
+  THE LADDER (From conservative to aggressive):
+  ---------------------------------------------------------------------------
+
+  TIER 1: NATURAL MAO-B INHIBITORS (Start here if patient prefers)
+  ---------------------------------------------------------------------------
+
+  Agent              | Mechanism              | Dose           | Notes
+  -------------------|------------------------|----------------|---------------
+  Rhodiola rosea     | Mild MAO-B inhibition  | 200-400mg      | Adaptogen
+                     | + adaptogenic effects  | standardized   | Well-tolerated
+  -------------------|------------------------|----------------|---------------
+  Green tea (EGCG)   | Weak MAO-B inhibition  | 400-800mg EGCG | Also antioxidant
+                     |                        | or 3-4 cups tea|
+  -------------------|------------------------|----------------|---------------
+  Oat straw (Avena)  | Mild MAO-B inhibition  | 800-1600mg     | Traditional use
+                     |                        |                | for focus
+
+  Pros: Low risk, can combine with other supplements
+  Cons: Weak effect, may not be enough for her MAO-B TT genotype
+
+  ---------------------------------------------------------------------------
+
+  TIER 2: LOW-DOSE SELEGILINE (Prescription - First choice)
+  ---------------------------------------------------------------------------
+
+  SELEGILINE (Deprenyl)
+
+  Starting Dose: 1.25mg daily (half of 2.5mg tablet)
+  Target Dose: 2.5-5mg daily
+  Route: Oral or sublingual
+
+  Why start at 1.25mg:
+  - MAO-B selective at LOW doses only
+  - Higher doses lose selectivity (inhibit MAO-A too)
+  - 1.25mg provides meaningful MAO-B inhibition
+  - Can titrate up based on response
+
+  Mechanism:
+
+       Currently:
+       Dopamine --[MAO-B TT FAST]--> DOPAL --> HVA (high)
+
+       With Selegiline:
+       Dopamine --[MAO-B BLOCKED]--> Dopamine PRESERVED
+
+  Benefits:
+  [+] Directly addresses her MAO-B TT problem
+  [+] Selective for MAO-B at low doses (doesn't affect serotonin/NE much)
+  [+] May improve: focus, motivation, energy, emotional regulation
+  [+] Neuroprotective effects (Parkinson's data)
+  [+] Sublingual bypasses first-pass metabolism
+
+  Cautions:
+  [-] Metabolizes to L-amphetamine and L-methamphetamine (mild at low doses)
+  [-] Potential for insomnia if taken too late in day
+  [-] At higher doses (>10mg), loses selectivity → dietary restrictions
+  [-] Interactions with SSRIs, SNRIs, meperidine
+
+  Monitoring:
+  - Take in AM to avoid sleep disruption
+  - Watch for: anxiety increase, insomnia, hypertension
+  - If these occur, may indicate dose too high or MAO-A involvement
+
+  ---------------------------------------------------------------------------
+
+  TIER 3: RASAGILINE (Alternative prescription option)
+  ---------------------------------------------------------------------------
+
+  RASAGILINE (Azilect)
+
+  Dose: 0.5-1mg daily
+  Route: Oral
+
+  Advantages over selegiline:
+  [+] NO amphetamine metabolites (cleaner profile)
+  [+] Once daily dosing
+  [+] May have additional neuroprotective mechanisms
+
+  Disadvantages:
+  [-] More expensive (newer drug)
+  [-] Less psychiatric data (primarily Parkinson's)
+  [-] Similar dietary restrictions at higher doses
+
+  ---------------------------------------------------------------------------
+
+  TIER 4: SAFINAMIDE (Newest option)
+  ---------------------------------------------------------------------------
+
+  SAFINAMIDE (Xadago)
+
+  Dose: 50-100mg daily
+  Route: Oral
+
+  Advantages:
+  [+] MAO-B inhibition + sodium channel modulation
+  [+] May have additional glutamate effects
+  [+] Once daily
+
+  Disadvantages:
+  [-] Newest, least long-term data
+  [-] Very limited psychiatric data
+  [-] Expensive
+
+  ---------------------------------------------------------------------------
+
+  RECOMMENDATION FOR THIS PATIENT:
+  ---------------------------------------------------------------------------
+
+  START: Selegiline 1.25mg daily (morning)
+
+  RATIONALE:
+  - Direct pharmacological match to her MAO-B TT genotype
+  - Low dose maintains MAO-B selectivity
+  - Most psychiatric data of the MAO-B inhibitors
+  - Can titrate up if needed (max ~5mg for selectivity)
+  - Sublingual option if oral not tolerated
+
+  TITRATION:
+  - Week 1-2: 1.25mg daily, assess tolerability
+  - Week 3-4: If tolerated but insufficient, increase to 2.5mg
+  - Week 5+: May go to 5mg if needed, but watch for lost selectivity
+
+  DIETARY:
+  - At 1.25-5mg, minimal tyramine restrictions needed
+  - Still advise avoiding AGED cheeses in large amounts
+  - No need for strict tyramine-free diet at these doses
+
++===============================================================================+
+\`\`\`
+
+### Matching Treatment to Mechanism
+
+\`\`\`
++===============================================================================+
+|                    THERAPEUTIC OPTIONS BY MECHANISM                            |
++===============================================================================+
+
+  MECHANISM                    | TREATMENT APPROACH      | AGENT
+  -----------------------------|-------------------------|---------------------
+                               |                         |
+  LOW DOPAMINE (MAO-B)         | Slow dopamine breakdown | Selegiline 1.25-5mg
+                               | Increase DA synthesis   | L-tyrosine 500-1000mg
+                               | Optimize cofactors      | Iron (ferritin >50)
+                               |                         | B6/P5P
+                               |                         |
+  -----------------------------|-------------------------|---------------------
+                               |                         |
+  AMPLIFIED NE RESPONSE (ADRB1)| Block beta receptors    | Propranolol 10-20mg
+                               |                         | (start low, titrate)
+                               |                         |
+  -----------------------------|-------------------------|---------------------
+                               |                         |
+  UNSTABLE NE (ADRA2A)         | Stabilize with alpha-2  | Guanfacine XR
+                               | agonist (paradoxical)   | Clonidine (if sleep)
+                               |                         |
+  -----------------------------|-------------------------|---------------------
+                               |                         |
+  BRAIN ENERGY DEFICIT         | Metabolic support       | MCT oil / ketones
+                               | Insulin sensitization   | Berberine
+                               | Mitochondrial support   | CoQ10, ALA
+
++===============================================================================+
+\`\`\`
+
+### Drug Mechanism Summaries
+
+\`\`\`
++===============================================================================+
+|                    PROPRANOLOL                                                 |
++===============================================================================+
+
+  CLASS: Non-selective beta-blocker (blocks β1 and β2)
+
+  MECHANISM:
+  ---------------------------------------------------------------------------
+
+       Currently:
+       NE --> ADRB1 Arg389 (3-4x gain) --> AMPLIFIED response
+
+       With Propranolol:
+       NE --> ADRB1 BLOCKED --> Response normalized
+
+  ---------------------------------------------------------------------------
+
+  FOR HER:
+  ---------------------------------------------------------------------------
+
+  [+] Her Arg389Arg genotype PREDICTS good beta-blocker response
+  [+] Clinical data: 38% mortality reduction in Arg389 homozygotes
+  [+] Crosses blood-brain barrier = central + peripheral effects
+  [+] FDA-approved for performance/situational anxiety
+  [+] Would address: racing heart, palpitations, physical anxiety
+
+  [-] Won't fix dopamine deficit (brain fog, ADHD)
+  [-] Won't fix the underlying NE instability (ADRA2A)
+  [-] May cause fatigue (she's already tired - monitor closely)
+  [-] Non-selective = potential bronchospasm if asthmatic
+
+  DOSING:
+  ---------------------------------------------------------------------------
+
+  Start: 10mg twice daily (low due to high-gain receptors)
+  Titrate: up to 20-40mg twice daily if needed and tolerated
+  PRN option: 10-20mg as needed for acute situations
+
+  She may need LOWER doses than typical - high-gain receptors = exquisite
+  sensitivity to blockade.
+
++===============================================================================+
+\`\`\`
+
+\`\`\`
++===============================================================================+
+|                    GUANFACINE                                                  |
++===============================================================================+
+
+  CLASS: Selective alpha-2A adrenergic agonist
+
+  MECHANISM (Paradoxical but real):
+  ---------------------------------------------------------------------------
+
+  These drugs ACTIVATE alpha-2 receptors (including autoreceptors).
+
+  "Wait - if she has OVEREXPRESSION, why ADD MORE stimulation?"
+
+  The logic:
+
+  1. Her autoreceptors are overexpressed but the SYSTEM is unstable
+  2. Low-dose alpha-2 agonist provides STEADY autoreceptor activation
+  3. This STABILIZES the system - less oscillation
+  4. Smooths out the spikes without completely suppressing NE
+
+       WITHOUT agonist:
+
+       NE level
+          ^    SPIKE        SPIKE
+          |     /\\           /\\
+          |    /  \\         /  \\
+          |---/----\\-------/----\\--- (unstable)
+          |  LOW   LOW    LOW
+          +-------------------------> time
+
+       WITH low-dose alpha-2 agonist:
+
+       NE level
+          ^
+          |
+          |---------------------------  (stable, moderate)
+          |
+          +-------------------------> time
+
+  ---------------------------------------------------------------------------
+
+  FOR HER:
+  ---------------------------------------------------------------------------
+
+  [+] FDA-approved for ADHD (she has ADHD)
+  [+] Clinically useful for PTSD (she has PTSD)
+  [+] Would stabilize the oscillating NE system
+  [+] May improve sleep (reduces nocturnal NE spikes)
+  [+] Specifically helps PFC function (where she needs it)
+
+  [-] Can cause sedation (but she's already tired - may or may not matter)
+  [-] Can cause hypotension (monitor BP)
+  [-] Doesn't address dopamine deficit directly
+
+  DOSING (Guanfacine XR):
+  ---------------------------------------------------------------------------
+
+  Start: 1mg at bedtime
+  Titrate: Weekly increases by 1mg
+  Target: 2-4mg at bedtime
+
+  Note: Best managed by psychiatry given ADHD/PTSD diagnoses
+
++===============================================================================+
+\`\`\`
+
+---
+
+## 11. Clinical Recommendations
+
+### Prioritized Staged Approach
+
+\`\`\`
++===============================================================================+
+|                    RECOMMENDED STAGED APPROACH                                 |
++===============================================================================+
+
+  GIVEN THE COMPLEXITY, A STAGED APPROACH IS ESSENTIAL:
+
+  ---------------------------------------------------------------------------
+  STAGE 0: FOUNDATIONAL OPTIMIZATION (Start immediately) ⭐ UPDATED V4
+  ---------------------------------------------------------------------------
+
+  A. IRON/FERRITIN OPTIMIZATION - URGENT PRIORITY
+
+  Rationale:
+  - Ferritin 9 ng/mL is CRITICALLY LOW (ref 16-232)
+  - This is BELOW laboratory reference range
+  - TH (tyrosine hydroxylase) requires iron - severely impaired at this level
+  - Can't make dopamine properly without adequate iron
+  - No amount of selegiline will help if she can't synthesize dopamine
+  - **V4 ADD: Ferritin crash (151→9) likely from perimenopausal bleeding**
+
+  Action:
+  - Full iron panel (ferritin, iron, TIBC, saturation) if not recent
+  - Investigate cause of progressive decline (151 → 9 over 4 years)
+  - **Perimenopausal bleeding likely culprit** - assess menstrual patterns
+  - Consider: GI losses, heavy menstruation, malabsorption, celiac screening
+  - Target ferritin >50 ng/mL minimum (some argue >70-100 for neurological)
+  - Iron supplementation - may need IV iron given severity
+  - Recheck ferritin in 6-8 weeks
+
+  B. GUT OPTIMIZATION - PREREQUISITE FOR HORMONE EFFICACY ⭐ NEW V4
+
+  Rationale:
+  - β-glucuronidase: 6281 U/g (2.6x upper limit)
+  - Fusobacterium: 66x overgrown (β-glucuronidase producer)
+  - High β-glucuronidase recirculates estrogen but SHBG captures it
+  - Must fix gut BEFORE hormone optimization will work
+
+  Action:
+  - Berberine 500mg 2x/day for 4-6 weeks
+    • Reduces Fusobacterium overgrowth
+    • Lowers β-glucuronidase activity
+    • Bonus: helps insulin sensitivity (IRS1 variants)
+  - Retest GI-MAP/β-glucuronidase at 4-6 weeks
+  - Target: β-glucuronidase <2398 U/g (within reference)
+
+  ⚠️ THIS IS MEDICAL PRIORITY #1 - fixing iron AND gut are prerequisites.
+
+  ---------------------------------------------------------------------------
+  STAGE 1: PROPRANOLOL TRIAL (Week 1-4)
+  ---------------------------------------------------------------------------
+
+  PROPRANOLOL 10-20mg BID
+
+  Rationale:
+  - STRONGEST pharmacogenomic evidence (ADRB1 Arg389Arg)
+  - Directly addresses physical symptoms (palpitations, racing heart)
+  - May improve sleep by reducing nocturnal sympathetic spikes
+  - Low risk, reversible, can assess response quickly
+  - Doesn't require psychiatry referral
+
+  Protocol:
+  - Start: 10mg twice daily
+  - Assess at 1-2 weeks: palpitations, physical anxiety, sleep quality
+  - Titrate: up to 20-40mg twice daily if needed and tolerated
+  - Monitor: HR, BP, fatigue level
+
+  Expected outcomes if hypothesis is correct:
+  - Reduced palpitations / racing heart
+  - Reduced physical tension
+  - Possibly improved sleep quality
+  - May NOT fully address cognitive/emotional anxiety
+
+  Decision point at Week 4:
+  - Physical symptoms improved? → Continue, move to Stage 2
+  - No improvement? → Increase dose or reconsider diagnosis
+
+  ---------------------------------------------------------------------------
+  STAGE 2: DOPAMINE SUPPORT (Week 4-8)
+  ---------------------------------------------------------------------------
+
+  ADD SELEGILINE 1.25mg daily (morning)
+
+  Rationale:
+  - MAO-B TT = confirmed rapid dopamine degradation
+  - HVA HIGH = confirms the problem
+  - ADHD + brain fog = PFC hypodopaminergia
+  - Iron optimization should be underway from Stage 0
+
+  Protocol:
+  - Start: 1.25mg daily in AM (half of 2.5mg tablet)
+  - Assess at 2 weeks: energy, focus, brain fog, mood
+  - Titrate: up to 2.5mg if tolerated but insufficient
+  - Maximum: 5mg daily to maintain MAO-B selectivity
+
+  Expected outcomes if hypothesis is correct:
+  - Improved focus / reduced brain fog
+  - Better emotional regulation
+  - May reduce "uncontrollable" quality of anxiety
+  - Energy improvement (dopamine is motivating)
+
+  Monitor for:
+  - Increased anxiety or agitation (dose may be too high)
+  - Insomnia (take earlier in day)
+  - Interactions with other medications
+
+  Decision point at Week 8:
+  - Cognitive/emotional improvement? → Continue current regimen
+  - Still unstable / oscillating pattern? → Move to Stage 2.5
+
+  ---------------------------------------------------------------------------
+  STAGE 2.5: HORMONE OPTIMIZATION ⭐ NEW IN V4
+  ---------------------------------------------------------------------------
+
+  PHYSIOLOGIC ESTROGEN CYCLING (After gut optimization from Stage 0)
+
+  Rationale:
+  - Serum E2 = 182 pg/mL (looks adequate)
+  - BUT Urine E2 = 0.92 ng/mg (LOW, ref 1.8-4.5) ← tissue-level LOW
+  - SHBG = 130-191 nmol/L (ELEVATED - binding estrogen)
+  - Estrogen INHIBITS MAO-B → low estrogen = faster dopamine loss
+  - Current flat HRT doesn't match physiologic rhythm
+  - Patient Goal #2 = libido (requires both estrogen AND dopamine)
+
+  Protocol (via prescribing MD):
+  - Switch from steady-state to CYCLING protocol:
+
+    | Days    | Dose     | Clicks | Target E2        | Phase         |
+    |---------|----------|--------|------------------|---------------|
+    | 1-5     | 0.5 mg   | 1      | 50-100 pg/mL     | Early         |
+    | 6-10    | 1.0 mg   | 2      | 100-200 pg/mL    | Mid-follicular|
+    | 11-14   | 1.5-2 mg | 3-4    | **250-550 pg/mL**| LIBIDO WINDOW |
+    | 15-28   | 0.75-1mg | 1.5-2  | Taper back       | Luteal        |
+
+  Expected outcomes:
+  - Mid-cycle estrogen peak (250-550 vs flat 182)
+  - MAO-B brake restored during peak → better dopamine
+  - Improved libido window (days 11-14)
+  - May reduce anxiety via MAO inhibition
+
+  Monitoring:
+  - Serum E2 at different cycle points
+  - DUTCH retest to check if urine E2 improves (target >1.8)
+  - Symptom tracking: libido, anxiety, energy, brain fog
+
+  Timeline: Start after 4-6 weeks of gut optimization (berberine)
+
+  ---------------------------------------------------------------------------
+  STAGE 3: SYSTEM STABILIZATION (If needed, via Psychiatry)
+  ---------------------------------------------------------------------------
+
+  CONSIDER GUANFACINE XR
+
+  Rationale:
+  - She has ADHD (FDA-approved indication)
+  - She has PTSD (clinical evidence for alpha-2 agonists)
+  - Would address the ADRA2A-related instability
+  - Complements both propranolol and dopamine support
+
+  Protocol (via psychiatry):
+  - Start: 1mg at bedtime
+  - Titrate: Weekly by 1mg
+  - Target: 2-4mg at bedtime
+
+  This stage typically requires psychiatry involvement given:
+  - Complexity of presentation
+  - ADHD/PTSD diagnoses
+  - Polypharmacy considerations
+
+  ---------------------------------------------------------------------------
+  ONGOING: METABOLIC SUPPORT
+  ---------------------------------------------------------------------------
+
+  Given APOE4 + IRS1 risk profile, consider:
+
+  - Low glycemic diet
+  - MCT oil (alternative brain fuel for APOE4)
+  - Time-restricted eating
+  - CoQ10 100-200mg (mitochondrial support)
+  - Omega-3 (DHA 1000mg+)
+
++===============================================================================+
+\`\`\`
+
+### Decision Tree
+
+\`\`\`
++===============================================================================+
+|                    CLINICAL DECISION TREE                                      |
++===============================================================================+
+
+  START: URGENT - Optimize ferritin (currently 9 ng/mL, target >50-70)
+         + Propranolol 10mg BID (can start concurrently)
+         |
+         v
+  ASSESS AT 2-4 WEEKS
+         |
+         +---> Physical symptoms improved?
+         |            |
+         |       YES  |  NO
+         |            |
+         v            v
+    Continue     Increase propranolol
+    propranolol  (up to 40mg BID)
+         |            |
+         |            v
+         |       Still no response?
+         |            |
+         |            v
+         |       Reconsider diagnosis
+         |       (is it really adrenergic?)
+         |
+         v
+  COGNITIVE/EMOTIONAL ANXIETY STILL PRESENT?
+         |
+    YES  |  NO
+         |
+         v            v
+  ADD selegiline   Maintain
+  1.25mg AM        propranolol
+         |         alone
+         v
+  ASSESS AT 2-4 WEEKS
+         |
+         +---> Improvement in fog/focus/regulation?
+         |            |
+         |       YES  |  NO
+         |            |
+         v            v
+    Continue     Increase to 2.5mg
+    regimen      (max 5mg for selectivity)
+         |
+         v
+  STILL UNSTABLE / OSCILLATING PATTERN?
+         |
+    YES  |  NO
+         |
+         v            v
+  Consider        Maintain
+  guanfacine      current
+  (psychiatry)    regimen
+         |
+         v
+  PSYCHIATRY REFERRAL FOR:
+  - Guanfacine XR initiation
+  - ADHD/PTSD management
+  - Complex polypharmacy oversight
+
++===============================================================================+
+\`\`\`
+
+### Summary Recommendation
+
+\`\`\`
++===============================================================================+
+|                    BOTTOM LINE (V4 - WITH HORMONAL INTEGRATION)               |
++===============================================================================+
+
+  HER ANXIETY IS MULTI-LAYERED - NOT SIMPLY "HIGH NE" OR "LOW SEROTONIN"
+
+  PRIMARY ENDOTYPE: DOPAMINERGIC + NORADRENERGIC + PERIMENOPAUSAL ⭐ V4
+
+  The combined model:
+
+    1. DOPAMINE DEPLETION (MAO-B TT + low iron + DRD2 GA)
+       → PFC dysfunction, can't regulate emotions, ADHD, brain fog
+
+    2. UNSTABLE NE (ADRA2A overexpression)
+       → Oscillates between low baseline and spikes
+
+    3. AMPLIFIED RESPONSES (ADRB1 Arg389)
+       → Small spikes feel huge, physical symptoms
+
+    4. BRAIN ENERGY DEFICIT (APOE4 + IRS1)
+       → May be amplifying all of the above
+
+    5. PERIMENOPAUSAL AMPLIFICATION ⭐ NEW V4
+       → Low tissue estrogen (urine E2 = 0.92, ref 1.8-4.5)
+       → Removes natural MAO-B brake → ACCELERATES dopamine loss
+       → Explains libido complaint + ferritin crash (bleeding)
+       → Makes #1 WORSE than genetics alone would predict
+
+  This explains the paradox of ALWAYS TIRED + SEVERE ANXIETY + LOW LIBIDO.
+
+  ---------------------------------------------------------------------------
+
+  THE TREATMENT STRATEGY (V4 UPDATED):
+
+  FOUNDATION (URGENT):
+  - Optimize iron - currently 9 ng/mL, CRITICALLY LOW
+  - Target ferritin >50-70 ng/mL (may need IV iron given severity)
+  - **Gut optimization - berberine 500mg 2x/day for β-glucuronidase** ⭐ NEW
+  - Metabolic support (low glycemic, MCT, omega-3)
+
+  STAGE 1: PROPRANOLOL 10-20mg BID
+  - Strongest pharmacogenomic evidence
+  - Addresses the "amplifier"
+  - Quick assessment of response
+
+  STAGE 2: SELEGILINE 1.25-2.5mg AM
+  - Addresses confirmed MAO-B issue
+  - May help ADHD, brain fog, emotional regulation
+
+  STAGE 2.5: HORMONE OPTIMIZATION ⭐ NEW V4
+  - Physiologic estrogen cycling (not flat HRT)
+  - Target mid-cycle E2: 250-550 pg/mL (vs current 182)
+  - Days 11-14 = LIBIDO WINDOW with higher dose
+  - Restores MAO-B brake → helps dopamine
+  - AFTER gut optimization (berberine for 4-6 weeks first)
+
+  STAGE 3: GUANFACINE (via psychiatry if needed)
+  - Approved for her diagnoses
+  - Stabilizes oscillating NE system
+
+  ---------------------------------------------------------------------------
+
+  THE GOAL IS NOT TO "FIX ONE THING" BUT TO REBALANCE THE SYSTEM
+
+  She needs:
+  - More dopamine in PFC (iron FIRST - currently 9 ng/mL, then selegiline)
+  - Less amplification of NE spikes (propranolol)
+  - More stability in NE regulation (possibly guanfacine)
+  - Better brain energy (metabolic support)
+  - **Optimized estrogen delivery (cycling protocol)** ⭐ NEW V4
+  - **Fixed gut for estrogen utilization (berberine)** ⭐ NEW V4
+
+  This is a MULTI-TARGET problem requiring MULTI-TARGET thinking.
+
+  ---------------------------------------------------------------------------
+
+  WHAT TO TRACK:
+
+  Symptom diary:
+  - Anxiety severity (0-10 daily)
+  - Palpitation frequency
+  - Energy level
+  - Sleep quality (refreshed on waking?)
+  - Brain fog severity
+  - Focus/ADHD symptoms
+  - **Libido (0-10, note cycle day)** ⭐ NEW V4
+
+  Objective:
+  - Resting heart rate
+  - Blood pressure
+  - Ferritin (recheck at 6-8 weeks)
+  - **β-glucuronidase (retest at 4-6 weeks)** ⭐ NEW V4
+  - **Serum E2 at different cycle points** ⭐ NEW V4
+
+  ---------------------------------------------------------------------------
+
+  RED FLAGS - WHEN TO REASSESS:
+
+  - Propranolol causes significant fatigue worsening
+  - Selegiline increases anxiety/agitation
+  - No improvement after full trial
+  - New symptoms emerge
+  - **Estrogen excess signs (breast tenderness, bloating)** ⭐ NEW V4
+
++===============================================================================+
+\`\`\`
+
+---
+
+## 12. Research Citations
+
+### By Topic
+
+\`\`\`
++===============================================================================+
+|                         RESEARCH CITATIONS                                     |
++===============================================================================+
+
+  ADRB1 rs1801253 (Arg389Gly) - Receptor Gain-of-Function:
+  ---------------------------------------------------------------------------
+  - Mason et al. (1999) OMIM: https://omim.org/entry/109630
+  - Physiological Genomics:
+    https://journals.physiology.org/doi/full/10.1152/physiolgenomics.90225.2008
+  - BEST Trial: https://pmc.ncbi.nlm.nih.gov/articles/PMC3804380/
+  - Dose-Response: https://pmc.ncbi.nlm.nih.gov/articles/PMC6205732/
+
+  MAO-B rs1799836 - Fast Dopamine Degradation:
+  ---------------------------------------------------------------------------
+  - PD Study: https://pmc.ncbi.nlm.nih.gov/articles/PMC8986734/
+  - Dopamine turnover: https://pubmed.ncbi.nlm.nih.gov/30216543/
+
+  ADRA2A rs553668 - Receptor Overexpression:
+  ---------------------------------------------------------------------------
+  - OMIM: https://www.omim.org/entry/104210
+  - Diabetes meta-analysis: https://pmc.ncbi.nlm.nih.gov/articles/PMC3110279/
+
+  Alpha-2 Receptor Overexpression in Stress/Depression:
+  ---------------------------------------------------------------------------
+  - Frontiers Neuroscience (CUMS study):
+    https://www.frontiersin.org/journals/neuroscience/articles/10.3389/fnins.2017.00243/full
+
+  DRD2 rs6277 - Reduced Receptor Availability:
+  ---------------------------------------------------------------------------
+  - Nature Genetics: D2 receptor mRNA stability effects
+  - Psychiatric Genetics: Association with addiction, ADHD
+
+  Iron/Ferritin and Tyrosine Hydroxylase:
+  ---------------------------------------------------------------------------
+  - Biochemistry textbooks: TH is iron-dependent enzyme
+  - RLS studies: Low ferritin associated with dopaminergic dysfunction
+  - https://pubmed.ncbi.nlm.nih.gov/15033276/
+
+  APOE4 and Brain Energy Metabolism:
+  ---------------------------------------------------------------------------
+  - Alzheimer's Research: https://pmc.ncbi.nlm.nih.gov/articles/PMC6561183/
+  - Brain glucose hypometabolism in APOE4 carriers
+
+  IRS1 and Brain Insulin Signaling:
+  ---------------------------------------------------------------------------
+  - Nature Reviews Neuroscience: Brain insulin signaling
+  - https://pmc.ncbi.nlm.nih.gov/articles/PMC3898398/
+
+  FKBP5 rs1360780 - PTSD Susceptibility:
+  ---------------------------------------------------------------------------
+  - Binder et al. landmark study: https://pubmed.ncbi.nlm.nih.gov/18252227/
+  - HPA axis modulation review: https://pmc.ncbi.nlm.nih.gov/articles/PMC4544725/
+
+  Alpha-2 Agonists in ADHD/PTSD:
+  ---------------------------------------------------------------------------
+  - PMC Review: https://pmc.ncbi.nlm.nih.gov/articles/PMC3676929/
+  - Guanfacine PFC effects: https://pmc.ncbi.nlm.nih.gov/articles/PMC4389556/
+
+  Selegiline/MAO-B Inhibitors:
+  ---------------------------------------------------------------------------
+  - Pharmacology: https://pmc.ncbi.nlm.nih.gov/articles/PMC2695721/
+  - Selectivity at low doses: https://pubmed.ncbi.nlm.nih.gov/2866063/
+
+  Estrogen-MAO Interaction ⭐ NEW V4:
+  ---------------------------------------------------------------------------
+  - Estrogen inhibits MAO activity: https://pubmed.ncbi.nlm.nih.gov/8622312/
+  - Perimenopause depression/MAO: https://pmc.ncbi.nlm.nih.gov/articles/PMC2828976/
+  - Estrogen and dopamine: https://pubmed.ncbi.nlm.nih.gov/17689629/
+  - MAO changes with menopause: https://pubmed.ncbi.nlm.nih.gov/16806686/
+
+  SHBG and Bioavailable Estrogen:
+  ---------------------------------------------------------------------------
+  - SHBG binding and free hormones: https://pubmed.ncbi.nlm.nih.gov/2685312/
+  - Tissue vs serum estrogen: https://pmc.ncbi.nlm.nih.gov/articles/PMC5915264/
+
+  β-glucuronidase and Estrogen Metabolism:
+  ---------------------------------------------------------------------------
+  - Gut microbiome estrobolome: https://pmc.ncbi.nlm.nih.gov/articles/PMC5017946/
+  - β-glucuronidase estrogen deconjugation: https://pubmed.ncbi.nlm.nih.gov/27644512/
+
++===============================================================================+
+\`\`\`
+
+---
+
+## Final Notes
+
+\`\`\`
++===============================================================================+
+|                              FINAL NOTES                                       |
++===============================================================================+
+
+  THIS ANALYSIS PRESENTS HYPOTHESES, NOT CERTAINTIES
+
+  The mechanisms described are:
+  - Based on VERIFIED genetic and lab data
+  - Supported by peer-reviewed research
+  - Internally consistent with her clinical presentation
+  - EVIDENCE-GRADED to distinguish strong from speculative claims
+  - But still HYPOTHETICAL until tested therapeutically
+
+  ---------------------------------------------------------------------------
+
+  THE VALUE OF THIS ANALYSIS:
+
+  1. Explains WHY her presentation is complex (multiple mechanisms)
+  2. Provides TESTABLE predictions (propranolol should help physical Sx)
+  3. Offers a FRAMEWORK for thinking about treatment
+  4. Avoids oversimplification ("just anxiety" or "just ADHD")
+  5. Identifies the PRIMARY endotypes (dopaminergic + noradrenergic)
+  6. Distinguishes from endotypes that DON'T fit (GABAergic, serotonergic)
+
+  ---------------------------------------------------------------------------
+
+  WHAT WE LEARNED FROM THE ANALYSIS PROCESS:
+
+  - Initial SNP assumptions were wrong in some cases (corrected with evidence)
+  - ADRA2A overexpression creates OSCILLATION, not simple inhibition
+  - The ferritin/TH connection is NOT moot despite high HVA
+  - Anxiety phenotypes are heterogeneous - endotype matters for treatment
+  - Brain energy deficits may be contributing to catecholamine dysfunction
+  - Multiple mechanisms can coexist and interact
+
+  ---------------------------------------------------------------------------
+
+  RECOMMENDED NEXT STEPS:
+
+  1. Review this analysis with treating clinician
+  2. URGENT: Address ferritin 9 ng/mL - investigate cause, aggressive repletion
+  3. Consider propranolol trial with close monitoring (can start now)
+  4. Track symptoms systematically
+  5. Reassess at 2-4 weeks, add dopamine support if needed
+  6. Psychiatry referral for guanfacine if oscillation pattern persists
+
+  ---------------------------------------------------------------------------
+
+  FOR THE REVIEWING PSYCHIATRIST:
+
+  This patient's anxiety appears to be primarily DOPAMINERGIC and
+  NORADRENERGIC in nature, NOT classic serotonergic or GABAergic.
+
+  Key genetic findings:
+  - MAO-B TT (fast) + ferritin 9 ng/mL (critical) + DRD2 GA = severe dopamine deficit
+  - ADRB1 Arg389Arg = 3-4x receptor gain, predicts beta-blocker response
+  - ADRA2A GG = autoreceptor overexpression → oscillating NE
+
+  The ALWAYS TIRED + SEVERE ANXIETY paradox is explained by:
+  - Low baseline (dopamine depleted, NE suppressed by autoreceptors)
+  - Spike responses (when NE released, massively amplified by ADRB1)
+
+  Treatment targets the MECHANISM, not just the symptom.
+
++===============================================================================+
+\`\`\`
+
+---
+
+**Document generated:** January 2026
+**Version:** 3.0 (Complete Endotype Analysis with Brain Energy Integration)
+**Data sources:** GP_All_Scored_SNPs.csv, GP_patient_input_v2.json (all genotypes verified)
+**Status:** For expert psychiatric review
+`;
+            document.getElementById('content').innerHTML = marked.parse(markdown);
+        }
+    </script>
+</body>
+</html>
